@@ -11,7 +11,10 @@ const port = process.env.API_GATEWAY_PORT || 4000;
 
 // Configure the Apollo Gateway
 const gateway = new ApolloGateway({
-  serviceList: [{ name: "auth", url: "http://localhost:4001/graphql" }],
+  serviceList: [
+    { name: "auth", url: "http://localhost:4001/graphql" },
+    { name: "vitalSign", url: "http://localhost:4002/graphql" },
+  ],
 });
 
 // Initialize an Apollo Server with Apollo Gateway
