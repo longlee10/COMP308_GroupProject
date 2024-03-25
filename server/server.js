@@ -11,7 +11,7 @@ const port = process.env.API_GATEWAY_PORT || 4000;
 
 // Configure the Apollo Gateway
 const gateway = new ApolloGateway({
-  serviceList: [],
+  serviceList: [{ name: "auth", url: "http://localhost:4001/graphql" }],
 });
 
 // Initialize an Apollo Server with Apollo Gateway
