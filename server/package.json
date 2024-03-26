@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "COMP-308 Group Project",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start:auth": "nodemon ./microservices/auth.microservice.js",
     "start:vitalSign": "nodemon ./microservices/vital-sign.microservice.js",
