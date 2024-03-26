@@ -1,23 +1,26 @@
-import React from "react";
 import Form from "react-bootstrap/Form";
 import { useParams } from "react-router-dom";
+import { FormEvent, useRef } from "react";
 import {
   useAddVitalSign,
-  useUpdateVitalSign,
   useGetVitalSignById,
   useGetVitalSigns,
+  useUpdateVitalSign,
 } from "../hooks/useVitalSign";
 
 const VitalSignForm = () => {
   const { id } = useParams();
   const handleAdd = useAddVitalSign();
   const handleUpdate = useUpdateVitalSign();
-  const { data } = useGetVitalSignById(id);
+  const data = useGetVitalSignById(id!);
   const { refetch } = useGetVitalSigns();
 
-  let temperature, bloodPressure, heartRate, respiratoryRate;
+  let temperature = useRef<HTMLInputElement>(null);
+  let bloodPressure = useRef<HTMLInputElement>(null);
+  let heartRate = useRef<HTMLInputElement>(null);
+  let respiratoryRate = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     id
       ? handleUpdate(id, temperature, bloodPressure, heartRate, respiratoryRate)
@@ -39,10 +42,8 @@ const VitalSignForm = () => {
           <Form.Control
             type="number"
             placeholder="Enter temperature"
-            ref={(node) => {
-              temperature = node;
-            }}
-            defaultValue={data && data.vitalSign.temperature}
+            ref={temperature!}
+            defaultValue={data && data.vitalSign.temperature.toString()}
           />
         </Form.Group>
         <Form.Group>
@@ -50,9 +51,7 @@ const VitalSignForm = () => {
           <Form.Control
             type="text"
             placeholder="Enter blood pressure"
-            ref={(node) => {
-              bloodPressure = node;
-            }}
+            ref={bloodPressure!}
             defaultValue={data && data.vitalSign.bloodPressure}
           />
         </Form.Group>
@@ -61,9 +60,7 @@ const VitalSignForm = () => {
           <Form.Control
             type="number"
             placeholder="Enter heart rate"
-            ref={(node) => {
-              heartRate = node;
-            }}
+            ref={heartRate!}
             defaultValue={data && data.vitalSign.heartRate}
           />
         </Form.Group>
@@ -72,9 +69,7 @@ const VitalSignForm = () => {
           <Form.Control
             type="number"
             placeholder="Enter respiratory rate"
-            ref={(node) => {
-              respiratoryRate = node;
-            }}
+            ref={respiratoryRate!}
             defaultValue={data && data.vitalSign.respiratoryRate}
           />
         </Form.Group>

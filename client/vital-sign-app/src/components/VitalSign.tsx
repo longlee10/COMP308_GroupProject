@@ -1,15 +1,14 @@
 import { useQuery } from "@apollo/client";
-import React from "react";
 import { Table } from "react-bootstrap";
 import { VITAL_SIGNS } from "../queries/vitalSignQueries";
 import { Link } from "react-router-dom";
+import { VitalSignsData } from "../entities/types";
 
 const VitalSign = () => {
-  const { loading, error, data } = useQuery(VITAL_SIGNS);
+  const { loading, error, data } = useQuery<VitalSignsData>(VITAL_SIGNS);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  console.log(error);
 
   return (
     <div>
@@ -28,8 +27,8 @@ const VitalSign = () => {
           </tr>
         </thead>
         <tbody>
-          {data.vitalSigns &&
-            data.vitalSigns.map((vitalSign) => (
+          {data?.vitalSigns &&
+            data?.vitalSigns.map((vitalSign) => (
               <tr key={vitalSign.id}>
                 <td>{vitalSign.temperature}</td>
                 <td>{vitalSign.bloodPressure}</td>
