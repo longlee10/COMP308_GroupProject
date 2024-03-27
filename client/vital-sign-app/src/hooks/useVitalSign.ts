@@ -6,20 +6,14 @@ import {
   GET_VITAL_SIGN_BY_ID,
   VITAL_SIGNS,
 } from "../queries/vitalSignQueries";
-import { VitalSignData } from "../entities/types";
-import { RefObject } from "react";
+import { VitalSignData, VitalSignFormData } from "../entities/types";
 
 const useAddVitalSign = () => {
   const [addVitalSign] = useMutation(ADD_VITAL_SIGN);
   const navigate = useNavigate();
 
-  const handleAdd = (
-    temperature: RefObject<HTMLInputElement>,
-    bloodPressure: RefObject<HTMLInputElement>,
-    heartRate: RefObject<HTMLInputElement>,
-    respiratoryRate: RefObject<HTMLInputElement>,
-    refetch: any
-  ) => {
+  const handleAdd = (formData: VitalSignFormData) => {
+    const { temperature, bloodPressure, heartRate, respiratoryRate } = formData;
     addVitalSign({
       variables: {
         temperature: parseFloat(temperature.current!.value),
@@ -35,7 +29,6 @@ const useAddVitalSign = () => {
     respiratoryRate.current!.value = "";
 
     navigate("/");
-    refetch();
   };
 
   return handleAdd;
@@ -45,13 +38,8 @@ const useUpdateVitalSign = () => {
   const [updateVitalSign] = useMutation(UPDATE_VITAL_SIGN);
   const navigate = useNavigate();
 
-  const handleUpdate = (
-    id: String,
-    temperature: RefObject<HTMLInputElement>,
-    bloodPressure: RefObject<HTMLInputElement>,
-    heartRate: RefObject<HTMLInputElement>,
-    respiratoryRate: RefObject<HTMLInputElement>
-  ) => {
+  const handleUpdate = (id: String, formData: VitalSignFormData) => {
+    const { temperature, bloodPressure, heartRate, respiratoryRate } = formData;
     updateVitalSign({
       variables: {
         id,
@@ -75,7 +63,6 @@ const useGetVitalSignById = (id: String): VitalSignData | undefined => {
     });
     return data;
   }
-  return undefined;
 };
 
 const useGetVitalSigns = () => {
