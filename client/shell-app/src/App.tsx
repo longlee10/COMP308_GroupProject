@@ -1,11 +1,10 @@
 // shell-app/src/App.jsx
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useQuery, gql } from "@apollo/client";
 import "./App.css";
 
-const UserApp = lazy(() => import("userApp/App"));
-const VitalSignApp = lazy(() => import("vitalSignApp/App"));
-// const ProductApp = lazy(() => import("productApp/App"));
+const UserApp = lazy(() => import("userApp/App"!));
+const VitalSignApp = lazy(() => import("vitalSignApp/App"!));
 
 // GraphQL query to check the current user's authentication status
 const CURRENT_USER_QUERY = gql`
@@ -26,7 +25,7 @@ function App() {
 
   useEffect(() => {
     // Listen for the custom loginSuccess event from the UserApp
-    const handleLoginSuccess = (event) => {
+    const handleLoginSuccess = (event: any) => {
       setIsLoggedIn(event.detail.isLoggedIn);
     };
 
