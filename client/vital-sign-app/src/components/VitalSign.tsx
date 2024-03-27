@@ -3,6 +3,7 @@ import { Table } from "react-bootstrap";
 import { VITAL_SIGNS } from "../queries/vitalSignQueries";
 import { Link } from "react-router-dom";
 import { VitalSignsData } from "../entities/types";
+import { Button } from "./ui/button";
 
 const VitalSign = () => {
   const { loading, error, data } = useQuery<VitalSignsData>(VITAL_SIGNS);
@@ -12,8 +13,9 @@ const VitalSign = () => {
 
   return (
     <div>
+      <Button>Test</Button>
       <Link to="/addVitalSign" className="btn btn-primary mb-3">
-        Add Vital Sign
+        <Button> Add Vital Sign </Button>
       </Link>
       <h2>Vital Signs</h2>
       <Table striped bordered hover>
