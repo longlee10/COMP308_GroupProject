@@ -1,7 +1,7 @@
 // user-app/src/UserComponent.jsx
-import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { Alert, Button, Form, Container, Nav, Spinner } from "react-bootstrap";
+import { FormEvent, useState } from "react";
+import { Alert, Button, Container, Form, Nav, Spinner } from "react-bootstrap";
 import { LOGIN_MUTATION, REGISTER_MUTATION } from "./queries/authQueries";
 
 function UserComponent() {
@@ -17,6 +17,8 @@ function UserComponent() {
       window.dispatchEvent(
         new CustomEvent("loginSuccess", { detail: { isLoggedIn: true } })
       );
+      // notify the user
+      alert("Login successful!");
     },
     onError: (error) => setAuthError(error.message || "Login failed"),
   });
@@ -32,7 +34,7 @@ function UserComponent() {
     },
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setAuthError("");
@@ -58,7 +60,7 @@ function UserComponent() {
       <Nav
         variant="tabs"
         activeKey={activeTab}
-        onSelect={(k) => setActiveTab(k)}
+        onSelect={(k) => setActiveTab(k!)}
       >
         <Nav.Item>
           <Nav.Link eventKey="login">Login</Nav.Link>
