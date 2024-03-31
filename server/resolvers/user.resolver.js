@@ -31,6 +31,26 @@ const generateToken = (res, user) => {
 
 const resolvers = {
   Query: {
+    users: async () => {
+      try {
+        const users = await User.find({});
+        return users;
+      } catch (error) {
+        console.error("Error in users resolver: ", error);
+        return [];
+      }
+    },
+
+    user: async (parent, args) => {
+      try {
+        const user = await User.findById(args._id);
+        return user;
+      } catch (error) {
+        console.error("Error in user resolver: ", error);
+        return null;
+      }
+    },
+
     currentUser: (parent, args, { req }) => {
       // Assuming the JWT token is sent via an HTTP-only cookie named 'token'
       const token = req.cookies.token;
