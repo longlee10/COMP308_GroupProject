@@ -7,6 +7,7 @@
   "scripts": {
     "start:auth": "nodemon ./microservices/auth.microservice.js",
     "start:vitalSign": "nodemon ./microservices/vital-sign.microservice.js",
+    "start:alert": "nodemon ./microservices/alert.microservice.js",
     "start:server": "nodemon ./server.js"
   },
   "repository": {
