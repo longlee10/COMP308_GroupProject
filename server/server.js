@@ -14,6 +14,7 @@ const gateway = new ApolloGateway({
   serviceList: [
     { name: "auth", url: "http://localhost:4001/graphql" },
     { name: "vitalSign", url: "http://localhost:4002/graphql" },
+    { name: "alert", url: "http://localhost:4003/graphql" },
   ],
 });
 

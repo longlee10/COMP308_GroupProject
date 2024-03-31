@@ -14,17 +14,19 @@ import configureMongoose from "../config/mongoose.js";
 import auth from "../middlewares/auth.middleware.js";
 
 // Import the GraphQL schema
-import typeDefs from "../schemas/vital-sign.schema.js";
-import resolvers from "../resolvers/vital-sign.resolver.js";
+import typeDefs from "../schemas/alert.schema.js";
+import resolvers from "../resolvers/alert.resolver.js";
+
+const jwtSecretKey = config.secretKey;
 
 // Create a new Mongoose connection instance
-const db = configureMongoose(config.vitalSignDb);
+const db = configureMongoose(config.alertDb);
 
 // Create a new Express application instance
 const app = configureExpress();
 
 // Define the port
-const port = process.env.VITAL_SIGN_MICROSERVICE_PORT || 4002;
+const port = process.env.ALERT_MICROSERVICE_PORT || 4003;
 
 // Add cors middleware
 app.use(
