@@ -1,7 +1,7 @@
-dotenv.config();
-
 // Load the correct configuration file according to the 'NODE_ENV' variable
 import dotenv from "dotenv";
+dotenv.config();
+
 import development from "./env/development.js";
 import production from "./env/production.js";
 
