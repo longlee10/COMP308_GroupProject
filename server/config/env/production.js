@@ -5,6 +5,7 @@ const config = {
   vitalSignDb: "mongodb://localhost:27017/group1-vital-sign-service-db",
   alertDb: "mongodb://localhost:27017/group1-alert-service-db",
   checklistDb: "mongodb://localhost:27017/group1-checklist-service-db",
+  dailyTipDb: "mongodb://localhost:27017/group1-daily-tip-service-db",
   sessionSecret: "productionSessionSecret",
   secretKey: "productionSecretKey",
 };
