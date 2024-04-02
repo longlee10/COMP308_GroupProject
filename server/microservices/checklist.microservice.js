@@ -14,17 +14,17 @@ import configureMongoose from "../config/mongoose.js";
 import auth from "../middlewares/auth.middleware.js";
 
 // Import the GraphQL schema
-import typeDefs from "../schemas/alert.schema.js";
-import resolvers from "../resolvers/alert.resolver.js";
+import typeDefs from "../schemas/checklist.schema.js";
+import resolvers from "../resolvers/checklist.resolver.js";
 
 // Create a new Mongoose connection instance
-const db = configureMongoose(config.alertDb);
+const db = configureMongoose(config.checklistDb);
 
 // Create a new Express application instance
 const app = configureExpress();
 
 // Define the port
-const port = process.env.ALERT_MICROSERVICE_PORT || 4003;
+const port = process.env.CHECKLIST_MICROSERVICE_PORT || 4004;
 
 // Add cors middleware
 app.use(
@@ -53,7 +53,7 @@ server.start().then(() => {
   // Start the server
   app.listen({ port }, () =>
     console.log(
-      `🚀 Vital Sign microservice ready at http://localhost:${port}${server.graphqlPath}`
+      `🚀 Checklist microservice ready at http://localhost:${port}${server.graphqlPath}`
     )
   );
 });

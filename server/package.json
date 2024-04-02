@@ -8,6 +8,7 @@
     "start:auth": "nodemon ./microservices/auth.microservice.js",
     "start:vitalSign": "nodemon ./microservices/vital-sign.microservice.js",
     "start:alert": "nodemon ./microservices/alert.microservice.js",
+    "start:checklist": "nodemon ./microservices/checklist.microservice.js",
     "start:server": "nodemon ./server.js"
   },
   "repository": {
