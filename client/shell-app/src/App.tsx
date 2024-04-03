@@ -1,10 +1,14 @@
 // shell-app/src/App.jsx
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useQuery, gql } from "@apollo/client";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 
 const UserApp = lazy(() => import("userApp/App"!));
 const VitalSignApp = lazy(() => import("vitalSignApp/App"!));
+const AlertApp = lazy(() => import("alertApp/App"!));
+const SymptomApp = lazy(() => import("symptomApp/App"!));
+const MotivationApp = lazy(() => import("motivationApp/App"!));
 
 // GraphQL query to check the current user's authentication status
 const CURRENT_USER_QUERY = gql`
@@ -47,7 +51,18 @@ function App() {
   return (
     <div className="App">
       <Suspense fallback={<div>Loading...</div>}>
-        {!isLoggedIn ? <UserApp /> : <VitalSignApp />}
+        {!isLoggedIn ? (
+          <UserApp />
+        ) : (
+          <Router>
+            <Routes>
+              <Route path="/vital-sign" element={<VitalSignApp />} />
+              <Route path="/alert" element={<AlertApp />} />
+              <Route path="/symptom" element={<SymptomApp />} />
+              <Route path="/motivation" element={<MotivationApp />} />
+            </Routes>
+          </Router>
+        )}
       </Suspense>
     </div>
   );

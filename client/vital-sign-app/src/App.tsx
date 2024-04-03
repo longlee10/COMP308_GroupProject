@@ -16,9 +16,12 @@ function App() {
       <div className="App">
         <ApolloProvider client={client}>
           <Routes>
-            <Route path="/" element={<VitalSign />} />
-            <Route path="/addVitalSign" element={<VitalSignForm />} />
-            <Route path="/edit/:id" element={<VitalSignForm />} />
+            <Route path="/vital-sign" element={<VitalSign />} />
+            <Route
+              path="/vital-sign/addVitalSign"
+              element={<VitalSignForm />}
+            />
+            <Route path="/vital-sign/edit/:id" element={<VitalSignForm />} />
           </Routes>
         </ApolloProvider>
       </div>
