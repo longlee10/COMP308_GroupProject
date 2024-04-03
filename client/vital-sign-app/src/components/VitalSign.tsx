@@ -13,11 +13,9 @@ const VitalSign = () => {
 
   return (
     <div>
-      <Button>Test</Button>
-      <Link to="/addVitalSign" className="btn btn-primary mb-3">
+      <Link to="/vital-sign/addVitalSign" className="btn btn-primary mb-3">
         <Button> Add Vital Sign </Button>
       </Link>
-      <h2>Vital Signs</h2>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -38,7 +36,7 @@ const VitalSign = () => {
                 <td>{vitalSign.respiratoryRate}</td>
                 <td>
                   <Link
-                    to={`/edit/${vitalSign.id}`}
+                    to={`/vital-sign/edit/${vitalSign.id}`}
                     className="btn btn-success"
                   >
                     Edit

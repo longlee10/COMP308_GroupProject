@@ -2,7 +2,8 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useQuery, gql } from "@apollo/client";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import "./App.css";
+// import "./App.css";
+import NavBar from "./components/NavBar";
 
 const UserApp = lazy(() => import("userApp/App"!));
 const VitalSignApp = lazy(() => import("vitalSignApp/App"!));
@@ -51,18 +52,30 @@ function App() {
   return (
     <div className="App">
       <Suspense fallback={<div>Loading...</div>}>
-        {!isLoggedIn ? (
+        {/* {!isLoggedIn ? (
           <UserApp />
         ) : (
-          <Router>
-            <Routes>
-              <Route path="/vital-sign" element={<VitalSignApp />} />
-              <Route path="/alert" element={<AlertApp />} />
-              <Route path="/symptom" element={<SymptomApp />} />
-              <Route path="/motivation" element={<MotivationApp />} />
-            </Routes>
-          </Router>
-        )}
+          
+            <Router>
+              <NavBar />
+              <Routes>
+                <Route path="/vital-sign" element={<VitalSignApp />} />
+                <Route path="/alert" element={<AlertApp />} />
+                <Route path="/symptom" element={<SymptomApp />} />
+                <Route path="/motivation" element={<MotivationApp />} />
+              </Routes>
+            </Router>
+           
+        )} */}
+        <Router>
+          <NavBar />
+          <Routes>
+            <Route path="/vital-sign" element={<VitalSignApp />} />
+            <Route path="/alert" element={<AlertApp />} />
+            <Route path="/symptom" element={<SymptomApp />} />
+            <Route path="/motivation" element={<MotivationApp />} />
+          </Routes>
+        </Router>
       </Suspense>
     </div>
   );

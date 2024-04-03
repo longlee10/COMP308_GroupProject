@@ -28,7 +28,7 @@ const useAddVitalSign = () => {
     heartRate.current!.value = "";
     respiratoryRate.current!.value = "";
 
-    navigate("/");
+    navigate("/vital-sign");
   };
 
   return handleAdd;
@@ -50,7 +50,7 @@ const useUpdateVitalSign = () => {
       },
     });
 
-    navigate("/");
+    navigate("/vital-sign");
   };
 
   return handleUpdate;
