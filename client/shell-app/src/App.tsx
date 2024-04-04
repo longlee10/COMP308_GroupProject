@@ -2,7 +2,7 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { useQuery, gql } from "@apollo/client";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-// import "./App.css";
+import "./App.css";
 import NavBar from "./components/NavBar";
 
 const UserApp = lazy(() => import("userApp/App"!));

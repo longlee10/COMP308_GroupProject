@@ -1,4 +1,4 @@
-import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap/dist/css/bootstrap.css";
 import VitalSign from "./components/VitalSign";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import VitalSignForm from "./components/VitalSignForm";

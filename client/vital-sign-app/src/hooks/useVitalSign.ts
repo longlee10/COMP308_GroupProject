@@ -16,17 +16,12 @@ const useAddVitalSign = () => {
     const { temperature, bloodPressure, heartRate, respiratoryRate } = formData;
     addVitalSign({
       variables: {
-        temperature: parseFloat(temperature.current!.value),
-        bloodPressure: bloodPressure.current!.value,
-        heartRate: parseFloat(heartRate.current!.value),
-        respiratoryRate: parseFloat(respiratoryRate.current!.value),
+        temperature: temperature,
+        bloodPressure: bloodPressure,
+        heartRate: heartRate,
+        respiratoryRate: respiratoryRate,
       },
     });
-
-    temperature.current!.value = "";
-    bloodPressure.current!.value = "";
-    heartRate.current!.value = "";
-    respiratoryRate.current!.value = "";
 
     navigate("/vital-sign");
   };
@@ -43,10 +38,10 @@ const useUpdateVitalSign = () => {
     updateVitalSign({
       variables: {
         id,
-        temperature: parseFloat(temperature.current!.value),
-        bloodPressure: bloodPressure.current!.value,
-        heartRate: parseFloat(heartRate.current!.value),
-        respiratoryRate: parseFloat(respiratoryRate.current!.value),
+        temperature: temperature,
+        bloodPressure: bloodPressure,
+        heartRate: heartRate,
+        respiratoryRate: respiratoryRate,
       },
     });
 

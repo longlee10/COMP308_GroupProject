@@ -1,50 +1,63 @@
 import { useQuery } from "@apollo/client";
-import { Table } from "react-bootstrap";
 import { VITAL_SIGNS } from "../queries/vitalSignQueries";
 import { Link } from "react-router-dom";
 import { VitalSignsData } from "../entities/types";
 import { Button } from "./ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const VitalSign = () => {
   const { loading, error, data } = useQuery<VitalSignsData>(VITAL_SIGNS);
+  const tableHeads = [
+    "Temperature",
+    "Blood Pressure",
+    "Heart Rate",
+    "Respiratory Rate",
+    "Action",
+  ];
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
   return (
     <div>
-      <Link to="/vital-sign/addVitalSign" className="btn btn-primary mb-3">
+      <Link to="/vital-sign/addVitalSign">
         <Button> Add Vital Sign </Button>
       </Link>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Temperature</th>
-            <th>Blood Pressure</th>
-            <th>Heart Rate</th>
-            <th>Respiratory Rate</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
+
+      <Table className="w-3/5 m-auto mt-5">
+        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
+        <TableHeader>
+          <TableRow>
+            {tableHeads.map((head) => (
+              <TableHead key={head} className="text-center">
+                {head}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {data?.vitalSigns &&
             data?.vitalSigns.map((vitalSign) => (
-              <tr key={vitalSign.id}>
-                <td>{vitalSign.temperature}</td>
-                <td>{vitalSign.bloodPressure}</td>
-                <td>{vitalSign.heartRate}</td>
-                <td>{vitalSign.respiratoryRate}</td>
-                <td>
-                  <Link
-                    to={`/vital-sign/edit/${vitalSign.id}`}
-                    className="btn btn-success"
-                  >
-                    Edit
+              <TableRow key={vitalSign.id}>
+                <TableCell>{vitalSign.temperature}</TableCell>
+                <TableCell>{vitalSign.bloodPressure}</TableCell>
+                <TableCell>{vitalSign.heartRate}</TableCell>
+                <TableCell>{vitalSign.respiratoryRate}</TableCell>
+                <TableCell>
+                  <Link to={`/vital-sign/edit/${vitalSign.id}`}>
+                    <Button>Edit</Button>
                   </Link>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-        </tbody>
+        </TableBody>
       </Table>
     </div>
   );

@@ -1,5 +1,3 @@
-import { RefObject } from "react";
-
 export interface VitalSign {
   id: string;
   temperature: number;
@@ -17,8 +15,8 @@ export interface VitalSignData {
 }
 
 export interface VitalSignFormData {
-  temperature: RefObject<HTMLInputElement>;
-  bloodPressure: RefObject<HTMLInputElement>;
-  heartRate: RefObject<HTMLInputElement>;
-  respiratoryRate: RefObject<HTMLInputElement>;
+  temperature: number;
+  bloodPressure: string;
+  heartRate: number;
+  respiratoryRate: number;
 }
