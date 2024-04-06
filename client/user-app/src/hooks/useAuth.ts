@@ -7,6 +7,8 @@ type UpdateFunction = (input: string) => void;
 const useAuth = (setActiveTab?: UpdateFunction) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const [register] = useMutation(REGISTER_MUTATION, {
     onCompleted: () => {
@@ -31,12 +33,21 @@ const useAuth = (setActiveTab?: UpdateFunction) => {
     onError: (error) => setAuthError(error.message || "Login failed"),
   });
 
-  const handleRegister = async (username: string, password: string) => {
-    await register({ variables: { username, password } });
-  };
+  const handleAuth = async (type: string) => {
+    setIsSubmitting(true);
+    setAuthError("");
 
-  const handleLogin = async (username: string, password: string) => {
-    await login({ variables: { username, password } });
+    if (!username || !password) {
+      setAuthError("Username and password are required.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    type === "signup"
+      ? await register({ variables: { username, password } })
+      : await login({ variables: { username, password } });
+
+    setIsSubmitting(false);
   };
 
   return {
@@ -44,8 +55,11 @@ const useAuth = (setActiveTab?: UpdateFunction) => {
     setIsSubmitting,
     authError,
     setAuthError,
-    handleRegister,
-    handleLogin,
+    handleAuth,
+    username,
+    setUsername,
+    password,
+    setPassword,
   };
 };
 
