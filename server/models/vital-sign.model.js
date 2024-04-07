@@ -7,7 +7,7 @@ const vitalSignSchema = new Schema(
       required: true,
     },
     bloodPressure: {
-      type: String,
+      type: Number,
       required: true,
     },
     heartRate: {
@@ -17,6 +17,14 @@ const vitalSignSchema = new Schema(
     respiratoryRate: {
       type: Number,
       required: true,
+    },
+    oxygenSaturation: {
+      type: Number,
+      required: true,
+    },
+    disease: {
+      type: Boolean,
+      default: false,
     },
   },
   {

@@ -25,6 +25,7 @@
   "dependencies": {
     "@apollo/federation": "^0.38.1",
     "@apollo/gateway": "^2.7.1",
+    "@tensorflow/tfjs-node": "^4.17.0",
     "apollo-server-express": "^3.13.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.19.1",
