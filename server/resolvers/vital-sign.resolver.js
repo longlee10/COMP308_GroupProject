@@ -3,7 +3,7 @@ import fs from "fs";
 import VitalSign from "../models/vital-sign.model.js";
 
 // Load the vital signs data
-const vitalSigns = JSON.parse(fs.readFileSync("data/vital-signs.json"));
+const vitalSigns = JSON.parse(fs.readFileSync("../data/vital-signs.json"));
 
 // build neural network using a sequential model
 const createModel = (learningRate = 0.001) => {

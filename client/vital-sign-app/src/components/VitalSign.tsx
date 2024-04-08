@@ -1,8 +1,3 @@
-import { useQuery } from "@apollo/client";
-import { VITAL_SIGNS } from "../queries/vitalSignQueries";
-import { Link } from "react-router-dom";
-import { VitalSignsData } from "../entities/types";
-import { Button } from "./ui/button";
 import {
   Table,
   TableBody,
@@ -11,9 +6,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetVitalSigns } from "@/hooks/useVitalSign";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
 
 const VitalSign = () => {
-  const { loading, error, data } = useQuery<VitalSignsData>(VITAL_SIGNS);
+  const { loading, error, data } = useGetVitalSigns();
   const tableHeads = [
     "Temperature",
     "Blood Pressure",
