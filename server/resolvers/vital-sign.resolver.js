@@ -1,9 +1,12 @@
 import * as tf from "@tensorflow/tfjs-node";
 import fs from "fs";
+import path from "path";
+import __dirname from "../config/__dirname.js";
 import VitalSign from "../models/vital-sign.model.js";
 
 // Load the vital signs data
-const vitalSigns = JSON.parse(fs.readFileSync("data/vital-signs.json"));
+const vitalSignsDataPath = path.join(__dirname, "data/vital-signs.json");
+const vitalSigns = JSON.parse(fs.readFileSync(vitalSignsDataPath));
 
 // build neural network using a sequential model
 const createModel = (learningRate = 0.001) => {
