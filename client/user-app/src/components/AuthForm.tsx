@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import Alert from "./Alert";
 import Spinner from "./Spinner";
 
@@ -19,34 +19,12 @@ interface AuthFormProps {
 }
 
 const AuthForm = ({ type, setActiveTab }: AuthFormProps) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const {
-    handleRegister,
-    handleLogin,
-    authError,
-    setAuthError,
-    isSubmitting,
-    setIsSubmitting,
-  } = useAuth(setActiveTab);
+  const { authError, isSubmitting, setUsername, setPassword, handleAuth } =
+    useAuth(setActiveTab);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setAuthError("");
-
-    if (!username || !password) {
-      setAuthError("Username and password are required.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    type === "signup"
-      ? await handleRegister(username, password)
-      : await handleLogin(username, password);
-
-    setIsSubmitting(false);
+    handleAuth(type);
   };
 
   return (
