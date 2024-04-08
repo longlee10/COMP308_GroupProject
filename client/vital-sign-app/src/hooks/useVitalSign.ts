@@ -6,7 +6,11 @@ import {
   GET_VITAL_SIGN_BY_ID,
   VITAL_SIGNS,
 } from "../queries/vitalSignQueries";
-import { VitalSignData, VitalSignFormData } from "../entities/types";
+import {
+  VitalSignData,
+  VitalSignFormData,
+  VitalSignsData,
+} from "../entities/types";
 
 const useAddVitalSign = () => {
   const [addVitalSign] = useMutation(ADD_VITAL_SIGN);
@@ -61,7 +65,7 @@ const useGetVitalSignById = (id: String): VitalSignData | undefined => {
 };
 
 const useGetVitalSigns = () => {
-  return useQuery(VITAL_SIGNS);
+  return useQuery<VitalSignsData>(VITAL_SIGNS);
 };
 
 export {
