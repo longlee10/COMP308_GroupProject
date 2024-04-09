@@ -1,6 +1,12 @@
 import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
+  type User {
+    id: ID
+    fullName: String
+    username: String
+  }
+
   type VitalSign {
     id: ID
     temperature: Float
@@ -9,6 +15,12 @@ const typeDefs = gql`
     respiratoryRate: Float
     oxygenSaturation: Float
     disease: Boolean
+    patient: User
+  }
+
+  type PredictResponse {
+    result: Boolean
+    message: String
   }
 
   type Query {
@@ -33,13 +45,7 @@ const typeDefs = gql`
       oxygenSaturation: Float!
     ): VitalSign
     deleteVitalSign(id: ID!): VitalSign
-    predictDisease(
-      temperature: Float!
-      bloodPressure: Float!
-      heartRate: Float!
-      respiratoryRate: Float!
-      oxygenSaturation: Float!
-    ): Boolean
+    predictDisease(id: ID!): PredictResponse
   }
 `;
 
