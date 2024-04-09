@@ -7,6 +7,8 @@ import VitalSign from "../models/vital-sign.model.js";
 // Load the vital signs data
 const vitalSignsDataPath = path.join(__dirname, "data/vital-signs.json");
 const vitalSigns = JSON.parse(fs.readFileSync(vitalSignsDataPath));
+// threshold value for disease prediction
+const vitalSignThreshold = 0.5;
 
 // build neural network using a sequential model
 const createModel = (learningRate = 0.001) => {
@@ -75,14 +77,19 @@ const trainModel = async (
 const resolvers = {
   Query: {
     vitalSigns: async (parent, args, { req, res }) => {
-      const { isAuthenticated } = req;
-
       try {
+        const { isAuthenticated } = req;
+
         if (!isAuthenticated) {
           throw new Error("User is not authenticated");
         }
 
-        const vitalSigns = await VitalSign.find({});
+        const vitalSigns = await VitalSign.find({}).populate({
+          path: "patient",
+          model: "User",
+          select: "-__v -createdAt -updatedAt -password",
+        });
+
         console.log(vitalSigns);
         return vitalSigns;
       } catch (error) {
@@ -91,10 +98,10 @@ const resolvers = {
       }
     },
     vitalSign: async (parent, args, { req, res }) => {
-      const { isAuthenticated } = req;
-      const { id } = args;
-
       try {
+        const { isAuthenticated } = req;
+        const { id } = args;
+
         if (!isAuthenticated) {
           throw new Error("User is not authenticated");
         }
@@ -110,16 +117,16 @@ const resolvers = {
 
   Mutation: {
     createVitalSign: async (parent, args, { req, res }) => {
-      const { isAuthenticated } = req;
-      const {
-        temperature,
-        bloodPressure,
-        heartRate,
-        respiratoryRate,
-        oxygenSaturation,
-      } = args;
-
       try {
+        const { isAuthenticated, userId, userRole } = req;
+        const {
+          temperature,
+          bloodPressure,
+          heartRate,
+          respiratoryRate,
+          oxygenSaturation,
+        } = args;
+
         if (!isAuthenticated) {
           throw new Error("User is not authenticated");
         }
@@ -130,6 +137,7 @@ const resolvers = {
           heartRate,
           respiratoryRate,
           oxygenSaturation,
+          patient: userRole === "patient" ? userId : null,
         });
 
         return vitalSign;
@@ -140,17 +148,17 @@ const resolvers = {
     },
 
     updateVitalSign: async (parent, args, { req, res }) => {
-      const { isAuthenticated } = req;
-      const {
-        id,
-        temperature,
-        bloodPressure,
-        heartRate,
-        respiratoryRate,
-        oxygenSaturation,
-      } = args;
-
       try {
+        const { isAuthenticated } = req;
+        const {
+          id,
+          temperature,
+          bloodPressure,
+          heartRate,
+          respiratoryRate,
+          oxygenSaturation,
+        } = args;
+
         if (!isAuthenticated) {
           throw new Error("User is not authenticated");
         }
@@ -175,10 +183,10 @@ const resolvers = {
     },
 
     deleteVitalSign: async (parent, args, { req, res }) => {
-      const { isAuthenticated } = req;
-      const { id } = args;
-
       try {
+        const { isAuthenticated } = req;
+        const { id } = args;
+
         if (!isAuthenticated) {
           throw new Error("User is not authenticated");
         }
@@ -192,21 +200,15 @@ const resolvers = {
     },
 
     predictDisease: async (parent, args, { req, res }) => {
-      const { isAuthenticated } = req;
-      const {
-        temperature,
-        bloodPressure,
-        heartRate,
-        respiratoryRate,
-        oxygenSaturation,
-      } = args;
-      // threshold value for disease prediction
-      const threshold = 0.5;
-
       try {
+        const { isAuthenticated } = req;
+        const { id } = args;
+
         if (!isAuthenticated) {
           throw new Error("User is not authenticated");
         }
+
+        const vitalSign = await VitalSign.findById(id);
 
         // Load the model
         const model = createModel();
@@ -230,11 +232,11 @@ const resolvers = {
         // Prepare the testing data
         const testingData = tf.tensor2d([
           [
-            temperature,
-            bloodPressure,
-            heartRate,
-            respiratoryRate,
-            oxygenSaturation,
+            vitalSign.temperature,
+            vitalSign.bloodPressure,
+            vitalSign.heartRate,
+            vitalSign.respiratoryRate,
+            vitalSign.oxygenSaturation,
           ],
         ]);
 
@@ -245,11 +247,15 @@ const resolvers = {
         const results = model.predict(testingData);
         const predictedData = results.arraySync();
         console.log(predictedData);
+        const result = predictedData[0][0] > vitalSignThreshold;
+        const message = result
+          ? "The patient may have a disease."
+          : "The patient may not have a disease.";
 
-        return predictedData[0][0] > threshold;
+        return { result, message };
       } catch (error) {
         console.error("Error in predictDisease resolver: ", error);
-        return null;
+        return { result: null, message: error.message };
       }
     },
   },
