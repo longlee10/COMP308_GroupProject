@@ -17,6 +17,7 @@ const VitalSign = () => {
     "Blood Pressure",
     "Heart Rate",
     "Respiratory Rate",
+    "Patient",
     "Action",
   ];
 
@@ -48,10 +49,13 @@ const VitalSign = () => {
                 <TableCell>{vitalSign.bloodPressure}</TableCell>
                 <TableCell>{vitalSign.heartRate}</TableCell>
                 <TableCell>{vitalSign.respiratoryRate}</TableCell>
-                <TableCell>
+                <TableCell>Patient Name</TableCell>
+                <TableCell className="flex gap-3">
                   <Link to={`/vital-sign/edit/${vitalSign.id}`}>
                     <Button>Edit</Button>
                   </Link>
+                  {/* This is only available for nurse -> hide if user is patient */}
+                  <Button>Predict Disease</Button>
                 </TableCell>
               </TableRow>
             ))}
