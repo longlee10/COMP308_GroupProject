@@ -6,9 +6,9 @@ const resolvers = {
       const { isAuthenticated } = req;
 
       try {
-        // if (!isAuthenticated) {
-        //   throw new Error("User is not authenticated");
-        // }
+        if (!isAuthenticated) {
+          throw new Error("User is not authenticated");
+        }
 
         const alerts = await Alert.find({});
         console.log(alerts);
@@ -48,9 +48,9 @@ const resolvers = {
       } = args;
 
       try {
-        // if (!isAuthenticated) {
-        //   throw new Error("User is not authenticated");
-        // }
+        if (!isAuthenticated) {
+          throw new Error("User is not authenticated");
+        }
 
         const alert = await Alert.create({
           patientName,
