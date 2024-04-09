@@ -26,6 +26,11 @@ const vitalSignSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    patient: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
   },
   {
     timestamps: true,
