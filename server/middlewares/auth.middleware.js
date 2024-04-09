@@ -17,8 +17,10 @@ const auth = ({ req, res }) => {
   try {
     const decoded = jwt.verify(token, jwtSecretKey);
     console.log("in auth middleware context - decoded: ", decoded);
-    const { username } = decoded;
-    req.isAuthenticated = username ? true : false;
+    const { userId, userRole } = decoded;
+    req.isAuthenticated = userId ? true : false;
+    req.userId = userId;
+    req.userRole = userRole;
     return { req, res };
   } catch (error) {
     console.error("Error in auth middleware context: ", error);
