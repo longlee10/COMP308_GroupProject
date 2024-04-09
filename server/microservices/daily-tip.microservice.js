@@ -18,7 +18,7 @@ import typeDefs from "../schemas/daily-tip.schema.js";
 import resolvers from "../resolvers/daily-tip.resolver.js";
 
 // Create a new Mongoose connection instance
-const db = configureMongoose(config.dailyTipDb);
+const db = configureMongoose(config.mongoDbUri);
 
 // Create a new Express application instance
 const app = configureExpress();

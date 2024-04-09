@@ -18,7 +18,7 @@ import typeDefs from "../schemas/checklist.schema.js";
 import resolvers from "../resolvers/checklist.resolver.js";
 
 // Create a new Mongoose connection instance
-const db = configureMongoose(config.checklistDb);
+const db = configureMongoose(config.mongoDbUri);
 
 // Create a new Express application instance
 const app = configureExpress();
@@ -33,6 +33,9 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:3002",
+      "http://localhost:3003",
+      "http://localhost:3004",
+      "http://localhost:3005",
       "http://localhost:4000",
       "https://studio.apollographql.com",
     ], // Adjust the origin according to your micro frontends' host

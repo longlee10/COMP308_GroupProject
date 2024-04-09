@@ -10,8 +10,9 @@ const jwtSecretKey = config.secretKey;
 const generateToken = (res, user) => {
   const token = jwt.sign(
     {
+      userId: user._id,
       username: user.username,
-      role: user.role,
+      userRole: user.role,
     },
     jwtSecretKey,
     {
