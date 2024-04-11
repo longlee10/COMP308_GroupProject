@@ -2,7 +2,7 @@ import "./App.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import Alert from "./components/Alert";
-import AlertForm from "./components/AlertFrom";
+import AlertForm from "./components/AlertForm";
 
 const client = new ApolloClient({
   uri: "http://localhost:4003/graphql", // Set this to your actual GraphQL endpoint
@@ -17,7 +17,7 @@ function App() {
         <ApolloProvider client={client}>
           <Routes>
             <Route path="/alert" element={<Alert />} />
-            <Route path="/alert-form" element={<AlertForm />} />
+            <Route path="/alert/add" element={<AlertForm />} />
           </Routes>
         </ApolloProvider>
       </div>

@@ -1,18 +1,15 @@
 import React, { useState } from "react";
-import { Alert } from "@/entities/types";
-import { useMutation } from "@apollo/client"; 
-import { ADD_ALERT } from "../queries/alertQueries"; 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+import { AlertFormData } from "@/entities/types";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { useAddAlert, useGetAlerts } from "@/hooks/useAlert";
+import { useNavigate } from "react-router-dom";
 
 const AlertForm = () => {
-  const [formData, setFormData] = useState<Alert>({
-    id: "",
+  const [formData, setFormData] = useState<AlertFormData>({
     patientName: "",
     responderName: "",
     responderPhone: "",
@@ -20,46 +17,85 @@ const AlertForm = () => {
     message: "",
   });
 
-  const [addAlertMutation] = useMutation(ADD_ALERT);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const addAlert = useAddAlert();
+  const { refetch } = useGetAlerts();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await addAlertMutation({ variables: formData });
-      console.log("Alert created:", response.data?.createAlert);
-      setFormData({
-        id: "",
-        patientName: "",
-        responderName: "",
-        responderPhone: "",
-        responderAddress: "",
-        message: "",
-      });
+      await addAlert(formData);
     } catch (error) {
       console.error("Error creating alert:", error);
     }
-  };  
+    navigate("/alert");
+    refetch();
+  };
 
   return (
     <div className="container mx-auto mt-4 max-w-md">
       <Card>
         <CardHeader>
           <CardTitle>Alert Form</CardTitle>
-          <CardDescription>Fill out the form below:</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
-            <div className="flex flex-col space-y-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <div className="space-y-1">
+              <Label htmlFor="patientName">Patient Name</Label>
+              <Input
+                id="patientName"
+                placeholder="Enter patient name..."
+                type="text"
+                onChange={(e) =>
+                  setFormData({ ...formData, patientName: e.target.value })
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="responderName">Responder Name</Label>
+              <Input
+                id="responderName"
+                placeholder="Enter responder name..."
+                type="text"
+                onChange={(e) =>
+                  setFormData({ ...formData, responderName: e.target.value })
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="responderPhone">Responder Phone</Label>
+              <Input
+                id="responderPhone"
+                placeholder="Enter responder phone..."
+                type="text"
+                onChange={(e) =>
+                  setFormData({ ...formData, responderPhone: e.target.value })
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="responderAddress">Responder Address</Label>
+              <Input
+                id="responderAddress"
+                placeholder="Enter responder address..."
+                type="text"
+                onChange={(e) =>
+                  setFormData({ ...formData, responderAddress: e.target.value })
+                }
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="message">Message</Label>
+              <Textarea
+                id="message"
+                placeholder="Enter your message..."
+                onChange={(e) =>
+                  setFormData({ ...formData, message: e.target.value })
+                }
+              />
+            </div>
+
+            {/* <div className="flex flex-col space-y-4">
               <label>
                 Patient Name:
                 <input
@@ -114,13 +150,10 @@ const AlertForm = () => {
                   required
                 />
               </label>
-            </div>
-            <button
-              type="submit"
-              className="mt-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-            >
+            </div> */}
+            <Button type="submit" className="mt-3 m-auto">
               Submit
-            </button>
+            </Button>
           </form>
         </CardContent>
       </Card>
