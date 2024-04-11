@@ -15,6 +15,7 @@ export default defineConfig({
         alertApp: "http://localhost:3003/assets/remoteEntry.js",
         symptomApp: "http://localhost:3004/assets/remoteEntry.js",
         motivationApp: "http://localhost:3005/assets/remoteEntry.js",
+        gameApp: "http://localhost:3006/assets/remoteEntry.js",
       },
       shared: ["react", "react-dom", "@apollo/client", "graphql"],
     }),
