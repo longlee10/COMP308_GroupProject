@@ -23,6 +23,9 @@ const Alert = () => {
 
   return (
     <div>
+      <Link to={"/alert/add"}>
+        <Button>Create Alert</Button>
+      </Link>
       <p className="text-center text-2xl font-bold mt-5">Alert List</p>
       <Table className="w-3/5 m-auto mt-5">
         <TableHeader>

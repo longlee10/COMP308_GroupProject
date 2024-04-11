@@ -14,3 +14,11 @@ export interface AlertsData {
 export interface AlertData {
   alert: Alert;
 }
+
+export interface AlertFormData {
+  patientName: string;
+  responderName: string;
+  responderPhone: string;
+  responderAddress: string;
+  message: string;
+}
