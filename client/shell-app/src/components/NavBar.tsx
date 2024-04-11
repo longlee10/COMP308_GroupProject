@@ -7,7 +7,7 @@ import {
 import { Link } from "react-router-dom";
 
 function NavBar() {
-  const navBars = [
+  const navBarsItems = [
     { name: "Home", path: "/" },
     { name: "Vital Signs", path: "/vital-sign" },
     { name: "Alerts", path: "/alert" },
@@ -16,21 +16,33 @@ function NavBar() {
     { name: "Game", path: "/game" },
   ];
   return (
-    <div className="mb-5 p-3">
-      <NavigationMenu>
-        <NavigationMenuList>
-          {navBars.map((navBar, index) => {
-            return (
-              <NavigationMenuItem key={index}>
-                <Link to={navBar.path} className={navigationMenuTriggerStyle()}>
-                  {navBar.name}
-                </Link>
-              </NavigationMenuItem>
-            );
-          })}
-        </NavigationMenuList>
-      </NavigationMenu>
-    </div>
+    <NavigationMenu className="mb-10 p-3 flex justify-between">
+      <NavigationMenuList>
+        {navBarsItems.map((navBar, index) => {
+          return (
+            <NavigationMenuItem key={index}>
+              <Link to={navBar.path} className={navigationMenuTriggerStyle()}>
+                {navBar.name}
+              </Link>
+            </NavigationMenuItem>
+          );
+        })}
+      </NavigationMenuList>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <Link to="#" className={navigationMenuTriggerStyle()}>
+            Login
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link to="#" className={navigationMenuTriggerStyle()}>
+            Logout
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>USERNAME</NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+
     // <Navbar expand="lg" className="bg-body-tertiary mb-5">
     //   <Container>
     //     <Navbar.Brand>Vital Hub</Navbar.Brand>
