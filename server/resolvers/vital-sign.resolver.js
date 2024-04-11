@@ -80,9 +80,9 @@ const resolvers = {
       try {
         const { isAuthenticated } = req;
 
-        if (!isAuthenticated) {
-          throw new Error("User is not authenticated");
-        }
+        // if (!isAuthenticated) {
+        //   throw new Error("User is not authenticated");
+        // }
 
         const vitalSigns = await VitalSign.find({}).populate({
           path: "patient",
@@ -102,11 +102,16 @@ const resolvers = {
         const { isAuthenticated } = req;
         const { id } = args;
 
-        if (!isAuthenticated) {
-          throw new Error("User is not authenticated");
-        }
+        // if (!isAuthenticated) {
+        //   throw new Error("User is not authenticated");
+        // }
 
-        const vitalSign = await VitalSign.findById(id);
+        const vitalSign = await VitalSign.findById(id).populate({
+          path: "patient",
+          model: "User",
+          select: "-__v -createdAt -updatedAt -password",
+        });
+        
         return vitalSign;
       } catch (error) {
         console.error("Error in vitalSign resolver: ", error);
@@ -127,9 +132,9 @@ const resolvers = {
           oxygenSaturation,
         } = args;
 
-        if (!isAuthenticated) {
-          throw new Error("User is not authenticated");
-        }
+        // if (!isAuthenticated) {
+        //   throw new Error("User is not authenticated");
+        // }
 
         const vitalSign = await VitalSign.create({
           temperature,
@@ -159,9 +164,9 @@ const resolvers = {
           oxygenSaturation,
         } = args;
 
-        if (!isAuthenticated) {
-          throw new Error("User is not authenticated");
-        }
+        // if (!isAuthenticated) {
+        //   throw new Error("User is not authenticated");
+        // }
 
         const vitalSign = await VitalSign.findByIdAndUpdate(
           id,
@@ -204,9 +209,9 @@ const resolvers = {
         const { isAuthenticated } = req;
         const { id } = args;
 
-        if (!isAuthenticated) {
-          throw new Error("User is not authenticated");
-        }
+        // if (!isAuthenticated) {
+        //   throw new Error("User is not authenticated");
+        // }
 
         const vitalSign = await VitalSign.findById(id);
 

@@ -22,9 +22,10 @@ import {
 
 const formSchema = z.object({
   temperature: z.coerce.number(),
-  bloodPressure: z.string(),
+  bloodPressure: z.coerce.number(),
   heartRate: z.coerce.number(),
   respiratoryRate: z.coerce.number(),
+  oxygenSaturation: z.coerce.number(),
 });
 
 const VitalSignForm = () => {
@@ -38,9 +39,10 @@ const VitalSignForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       temperature: 0,
-      bloodPressure: "",
+      bloodPressure: 0,
       heartRate: 0,
       respiratoryRate: 0,
+      oxygenSaturation: 0,
     },
   });
 
@@ -51,6 +53,7 @@ const VitalSignForm = () => {
       form.setValue("bloodPressure", vitalSign.bloodPressure);
       form.setValue("heartRate", vitalSign.heartRate);
       form.setValue("respiratoryRate", vitalSign.respiratoryRate);
+      form.setValue("oxygenSaturation", vitalSign.oxygenSaturation);
     }
   }, [data, form]);
 
@@ -94,7 +97,7 @@ const VitalSignForm = () => {
                   <Input
                     placeholder="Add blood pressure..."
                     {...field}
-                    type="text"
+                    type="number"
                   />
                 </FormControl>
                 <FormMessage />
@@ -127,6 +130,23 @@ const VitalSignForm = () => {
                 <FormControl>
                   <Input
                     placeholder="Add respiratory rate..."
+                    {...field}
+                    type="number"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="oxygenSaturation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Oxygen Saturation</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Add oxygen saturation..."
                     {...field}
                     type="number"
                   />
