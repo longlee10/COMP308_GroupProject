@@ -58,7 +58,7 @@ const PredictionResult = () => {
           <TableCell>{vitalSign?.vitalSign.heartRate}</TableCell>
           <TableCell>{vitalSign?.vitalSign.respiratoryRate}</TableCell>
           <TableCell>{vitalSign?.vitalSign.oxygenSaturation}</TableCell>
-          <TableCell>{vitalSign?.vitalSign.patient.username}</TableCell>
+          <TableCell>{vitalSign?.vitalSign.patient?.username}</TableCell>
           <TableCell
             className={
               data?.predictDisease.result

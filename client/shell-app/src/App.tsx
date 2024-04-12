@@ -4,12 +4,15 @@ import { useQuery, gql } from "@apollo/client";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/NavBar";
+import ErrorPage from "./components/ErrorPage";
+import HomePage from "./components/HomePage";
 
 const UserApp = lazy(() => import("userApp/App"!));
 const VitalSignApp = lazy(() => import("vitalSignApp/App"!));
 const AlertApp = lazy(() => import("alertApp/App"!));
 const SymptomApp = lazy(() => import("symptomApp/App"!));
 const MotivationApp = lazy(() => import("motivationApp/App"!));
+const GameApp = lazy(() => import("gameApp/App"!));
 
 // GraphQL query to check the current user's authentication status
 const CURRENT_USER_QUERY = gql`
@@ -70,10 +73,13 @@ function App() {
         <Router>
           <NavBar />
           <Routes>
+            <Route path="*" element={<ErrorPage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/vital-sign" element={<VitalSignApp />} />
             <Route path="/alert" element={<AlertApp />} />
             <Route path="/symptom" element={<SymptomApp />} />
             <Route path="/motivation" element={<MotivationApp />} />
+            <Route path="/game" element={<GameApp />} />
           </Routes>
         </Router>
       </Suspense>

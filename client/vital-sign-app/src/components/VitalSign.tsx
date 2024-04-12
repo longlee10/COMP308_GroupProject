@@ -53,7 +53,7 @@ const VitalSign = () => {
                 <TableCell>{vitalSign.heartRate}</TableCell>
                 <TableCell>{vitalSign.respiratoryRate}</TableCell>
                 <TableCell>{vitalSign.oxygenSaturation}</TableCell>
-                <TableCell>{vitalSign.patient.username}</TableCell>
+                <TableCell>{vitalSign.patient?.username}</TableCell>
                 <TableCell className="flex gap-3">
                   <Link to={`/vital-sign/edit/${vitalSign.id}`}>
                     <Button>Edit</Button>
