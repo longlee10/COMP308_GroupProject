@@ -7,8 +7,7 @@ const CHECK_LISTS = gql`
     patientName
     selectedSymptoms
     }
-}
-}
+ }
 `;
 
 const ADD_CHECK_LIST = gql`

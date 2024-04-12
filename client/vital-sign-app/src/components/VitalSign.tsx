@@ -33,41 +33,48 @@ const VitalSign = () => {
         <Button> Add Vital Sign </Button>
       </Link>
 
-      <Table className="w-3/5 m-auto mt-5">
-        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-        <TableHeader>
-          <TableRow>
-            {tableHeads.map((head) => (
-              <TableHead key={head} className="text-center">
-                {head}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {vitalSignsData?.vitalSigns &&
-            vitalSignsData?.vitalSigns.map((vitalSign) => (
-              <TableRow key={vitalSign.id}>
-                <TableCell>{vitalSign.temperature}</TableCell>
-                <TableCell>{vitalSign.bloodPressure}</TableCell>
-                <TableCell>{vitalSign.heartRate}</TableCell>
-                <TableCell>{vitalSign.respiratoryRate}</TableCell>
-                <TableCell>{vitalSign.oxygenSaturation}</TableCell>
-                <TableCell>{vitalSign.patient.username}</TableCell>
-                <TableCell className="flex gap-3">
-                  <Link to={`/vital-sign/edit/${vitalSign.id}`}>
-                    <Button>Edit</Button>
-                  </Link>
-                  {/* This is only available for nurse -> hide if user is patient */}
-
-                  <Link to={`/vital-sign/predictDisease/${vitalSign.id}`}>
-                    <Button>Predict Disease</Button>
-                  </Link>
-                </TableCell>
+      {vitalSignsData?.vitalSigns.length === 0 ? (
+        <div className="h-screen flex flex-col justify-center">
+          <p className="text-xl m-auto">There is no vital sign recorded.</p>
+        </div>
+      ) : (
+        <>
+          <Table className="w-3/5 m-auto mt-5">
+            <TableHeader>
+              <TableRow>
+                {tableHeads.map((head) => (
+                  <TableHead key={head} className="text-center">
+                    {head}
+                  </TableHead>
+                ))}
               </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+            </TableHeader>
+            <TableBody>
+              {vitalSignsData?.vitalSigns &&
+                vitalSignsData?.vitalSigns.map((vitalSign) => (
+                  <TableRow key={vitalSign.id}>
+                    <TableCell>{vitalSign.temperature}</TableCell>
+                    <TableCell>{vitalSign.bloodPressure}</TableCell>
+                    <TableCell>{vitalSign.heartRate}</TableCell>
+                    <TableCell>{vitalSign.respiratoryRate}</TableCell>
+                    <TableCell>{vitalSign.oxygenSaturation}</TableCell>
+                    <TableCell>{vitalSign.patient?.username}</TableCell>
+                    <TableCell className="flex gap-3">
+                      <Link to={`/vital-sign/edit/${vitalSign.id}`}>
+                        <Button>Edit</Button>
+                      </Link>
+                      {/* This is only available for nurse -> hide if user is patient */}
+
+                      <Link to={`/vital-sign/predictDisease/${vitalSign.id}`}>
+                        <Button>Predict Disease</Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </>
+      )}
     </div>
   );
 };
