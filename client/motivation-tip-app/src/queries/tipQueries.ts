@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 const TIPS = gql`
- query {
+  query {
     dailyTips {
       id
       title
@@ -11,14 +11,8 @@ const TIPS = gql`
 `;
 
 const CREATE_TIP = gql`
- mutation CreateDailyTip(
-    $title: String!,
-    $description: String!
-  ) {
-    createDailyTip(
-      title: $title,
-      description: $description
-    ) {
+  mutation CreateDailyTip($title: String!, $description: String!) {
+    createDailyTip(title: $title, description: $description) {
       id
       title
       description

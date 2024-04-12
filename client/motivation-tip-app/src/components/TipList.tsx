@@ -7,7 +7,7 @@ import {
   TableCell,
   Table,
 } from "../components/ui/table";
-import { useGetTip } from "@/useTip";
+import { useGetTip } from "@/hooks/useTip";
 import { Button } from "./ui/button";
 
 const TipList = () => {
@@ -16,6 +16,9 @@ const TipList = () => {
 
   return (
     <div>
+      <Link to="/motivation/addTips">
+        <Button> Add Daily Tips </Button>
+      </Link>
       <p className="text-center text-2xl font-bold mt-5">Daily Tips!</p>
       <Table className="w-3/5 m-auto mt-5">
         <TableHeader>
@@ -36,7 +39,7 @@ const TipList = () => {
               <TableRow key={tip.id}>
                 <TableCell>{tip.title}</TableCell>
                 <TableCell>{tip.description}</TableCell>
-                <TableCell className="flex gap-3">
+                <TableCell className="flex justify-center gap-1">
                   <Link to={``}>
                     <Button>Edit</Button>
                   </Link>
