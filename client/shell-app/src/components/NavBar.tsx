@@ -4,9 +4,11 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { UserData } from "@/types";
 import { Link } from "react-router-dom";
+import { useLogout } from "@/hooks";
 
-function NavBar({ isLoggedIn }: { isLoggedIn: boolean }) {
+function NavBar({ user }: { user: UserData }) {
   const navBarsItems = [
     { name: "Home", path: "/" },
     { name: "Vital Signs", path: "/vital-sign" },
@@ -15,6 +17,9 @@ function NavBar({ isLoggedIn }: { isLoggedIn: boolean }) {
     { name: "Symptoms", path: "/symptom" },
     { name: "Game", path: "/game" },
   ];
+
+  const logout = useLogout();
+
   return (
     <NavigationMenu className="mb-10 p-3 flex justify-between">
       <NavigationMenuList>
@@ -29,14 +34,17 @@ function NavBar({ isLoggedIn }: { isLoggedIn: boolean }) {
         })}
       </NavigationMenuList>
       <NavigationMenuList>
-        {isLoggedIn ? (
+        {user.currentUser ? (
           <>
-            <NavigationMenuItem>
-              <Link to="#" className={navigationMenuTriggerStyle()}>
-                Logout
-              </Link>
+            <NavigationMenuItem
+              className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+              onClick={logout}
+            >
+              Logout
             </NavigationMenuItem>
-            <NavigationMenuItem>USERNAME</NavigationMenuItem>
+            <NavigationMenuItem>
+              {user?.currentUser.username}
+            </NavigationMenuItem>
           </>
         ) : (
           <NavigationMenuItem>
