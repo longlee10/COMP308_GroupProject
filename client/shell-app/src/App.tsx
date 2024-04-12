@@ -6,6 +6,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import ErrorPage from "./components/ErrorPage";
 import HomePage from "./components/HomePage";
+import Cookies from "js-cookie";
 
 const UserApp = lazy(() => import("userApp/App"!));
 const VitalSignApp = lazy(() => import("vitalSignApp/App"!));
@@ -31,6 +32,8 @@ function App() {
     fetchPolicy: "network-only",
   });
 
+  console.log(data);
+
   useEffect(() => {
     // Listen for the custom loginSuccess event from the UserApp
     const handleLoginSuccess = (event: any) => {
@@ -49,29 +52,36 @@ function App() {
     };
   }, [loading, error, data]);
 
+  const cookie2 = Cookies.get("token");
+  console.log("token:", cookie2);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error! {error.message}</div>;
 
   return (
     <div className="App">
       <Suspense fallback={<div>Loading...</div>}>
-        {/* {!isLoggedIn ? (
-          <UserApp />
-        ) : (
-          
-            <Router>
-              <NavBar />
-              <Routes>
+        <Router>
+          <NavBar isLoggedIn={isLoggedIn} />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="*" element={<ErrorPage />} />
+            {!isLoggedIn ? (
+              <Route path="auth" element={<UserApp />} />
+            ) : (
+              <>
                 <Route path="/vital-sign" element={<VitalSignApp />} />
                 <Route path="/alert" element={<AlertApp />} />
                 <Route path="/symptom" element={<SymptomApp />} />
                 <Route path="/motivation" element={<MotivationApp />} />
-              </Routes>
-            </Router>
-           
-        )} */}
-        <Router>
-          <NavBar />
+                <Route path="/game" element={<GameApp />} />
+              </>
+            )}
+          </Routes>
+        </Router>
+
+        {/* <Router>
+          <NavBar isLoggedIn={isLoggedIn} />
           <Routes>
             <Route path="*" element={<ErrorPage />} />
             <Route path="/" element={<HomePage />} />
@@ -81,7 +91,7 @@ function App() {
             <Route path="/motivation" element={<MotivationApp />} />
             <Route path="/game" element={<GameApp />} />
           </Routes>
-        </Router>
+        </Router> */}
       </Suspense>
     </div>
   );

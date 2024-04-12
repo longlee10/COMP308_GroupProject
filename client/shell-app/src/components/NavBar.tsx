@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Link } from "react-router-dom";
 
-function NavBar() {
+function NavBar({ isLoggedIn }: { isLoggedIn: boolean }) {
   const navBarsItems = [
     { name: "Home", path: "/" },
     { name: "Vital Signs", path: "/vital-sign" },
@@ -29,42 +29,24 @@ function NavBar() {
         })}
       </NavigationMenuList>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link to="#" className={navigationMenuTriggerStyle()}>
-            Login
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link to="#" className={navigationMenuTriggerStyle()}>
-            Logout
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>USERNAME</NavigationMenuItem>
+        {isLoggedIn ? (
+          <>
+            <NavigationMenuItem>
+              <Link to="#" className={navigationMenuTriggerStyle()}>
+                Logout
+              </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>USERNAME</NavigationMenuItem>
+          </>
+        ) : (
+          <NavigationMenuItem>
+            <Link to="/auth" className={navigationMenuTriggerStyle()}>
+              Login or Register
+            </Link>
+          </NavigationMenuItem>
+        )}
       </NavigationMenuList>
     </NavigationMenu>
-
-    // <Navbar expand="lg" className="bg-body-tertiary mb-5">
-    //   <Container>
-    //     <Navbar.Brand>Vital Hub</Navbar.Brand>
-    //     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    //     <Navbar.Collapse id="basic-navbar-nav">
-    //       <Nav className="me-auto gap-3">
-    //         <Nav.Item>
-    //           <Link to="/vital-sign">Vital Sign</Link>
-    //         </Nav.Item>
-    //         <Nav.Item>
-    //           <Link to="/alert">Alert</Link>
-    //         </Nav.Item>
-    //         <Nav.Item>
-    //           <Link to="/motivation">Motivation</Link>
-    //         </Nav.Item>
-    //         <Nav.Item>
-    //           <Link to="/symptom">Symptom</Link>
-    //         </Nav.Item>
-    //       </Nav>
-    //     </Navbar.Collapse>
-    //   </Container>
-    // </Navbar>
   );
 }
 
