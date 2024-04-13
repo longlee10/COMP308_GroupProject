@@ -36,7 +36,7 @@ const GET_CHECKLIST_BY_ID = gql`
 }
 `;
 
-const UPDATE_CHECKLIST= gql`
+const UPDATE_CHECKLIST = gql`
   mutation UpdateChecklist($id: ID!, $patientName: String!, $selectedSymptoms: [String!]!) {
   updateChecklist(id: $id, patientName: $patientName, selectedSymptoms: $selectedSymptoms) {
     id
@@ -47,4 +47,18 @@ const UPDATE_CHECKLIST= gql`
 
 `;
 
-export { CHECKLISTS, ADD_CHECKLIST, GET_CHECKLIST_BY_ID, UPDATE_CHECKLIST };
+const DELETE_CHECKLIST = gql`
+  mutation DeleteChecklist($id: ID!) {
+  deleteChecklist(id: $id) {
+    id
+  }
+}
+`;
+
+export {
+  CHECKLISTS,
+  ADD_CHECKLIST,
+  GET_CHECKLIST_BY_ID,
+  UPDATE_CHECKLIST,
+  DELETE_CHECKLIST,
+};

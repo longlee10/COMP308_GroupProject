@@ -5,6 +5,7 @@ import {
   UPDATE_CHECKLIST,
   GET_CHECKLIST_BY_ID,
   CHECKLISTS,
+  DELETE_CHECKLIST,
 } from "../queries/checklistQueries";
 import {
   ChecklistData,
@@ -17,7 +18,7 @@ const useAddSymptom = () => {
   const navigate = useNavigate();
 
   const handleAdd = (formData: ChecklistFormData) => {
-    const { patientName, selectedSymptoms} = formData;
+    const { patientName, selectedSymptoms } = formData;
     addSymptom({
       variables: {
         patientName: patientName,
@@ -64,9 +65,27 @@ const useGetSymptoms = () => {
   return useQuery<ChecklistsData>(CHECKLISTS);
 };
 
+const useDeleteSymptom = () => {
+  const [deleteSymptom] = useMutation(DELETE_CHECKLIST);
+  const navigate = useNavigate();
+
+  const handleDelete = (id: String) => {
+    deleteSymptom({
+      variables: {
+        id,
+      },
+    });
+
+    navigate("/symptom");
+  };
+
+  return handleDelete;
+};
+
 export {
   useAddSymptom,
   useUpdateSymptom,
   useGetSymptomById,
   useGetSymptoms,
+  useDeleteSymptom,
 };

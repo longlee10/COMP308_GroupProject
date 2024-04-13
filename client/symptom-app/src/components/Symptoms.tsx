@@ -8,10 +8,11 @@ import {
 } from "@/components/ui/table";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { useGetSymptoms } from "@/hooks/useSymptom";
+import { useGetSymptoms, useDeleteSymptom } from "@/hooks/useSymptom";
 
 const Symptoms = () => {
-  const { data, loading, error } = useGetSymptoms();
+  const { data, loading, error, refetch } = useGetSymptoms();
+  const handleDelete = useDeleteSymptom();
   const tableHeads = ["Patient Name", "Symptoms", "Action"];
 
   if (loading) return <p>Loading...</p>;
@@ -51,6 +52,15 @@ const Symptoms = () => {
                       <Link to={`/symptom/edit/${checkList.id}`}>
                         <Button>Edit</Button>
                       </Link>
+                      <Button
+                        className="bg-red-500 hover:bg-red-600 ms-3"
+                        onClick={() => {
+                          handleDelete(checkList.id);
+                          refetch();
+                        }}
+                      >
+                        Delete
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
