@@ -1,5 +1,4 @@
-// import "./App.css";
-// import "bootstrap/dist/css/bootstrap.css";
+import "./App.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import Symptom from "./components/Symptom";
@@ -28,12 +27,7 @@ function App() {
         </ApolloProvider>
       </div>
 
-      <div>
-        {/* <Symptom /> */}
-      </div>
     </Router>
-
-    
   );
 }
 
