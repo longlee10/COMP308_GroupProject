@@ -29,6 +29,8 @@ const useAuth = (setActiveTab?: UpdateFunction) => {
       );
       // notify the user
       alert("Login successful!");
+      // refresh page
+      window.location.reload();
     },
     onError: (error) => setAuthError(error.message || "Login failed"),
   });
