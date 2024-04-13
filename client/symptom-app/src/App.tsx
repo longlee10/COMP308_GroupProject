@@ -1,7 +1,10 @@
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.css";
+// import "./App.css";
+// import "bootstrap/dist/css/bootstrap.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import Symptom from "./components/Symptom";
+import SymptomForm from "./components/SymptomForm";
+
 
 const client = new ApolloClient({
   uri: "http://localhost:4004/graphql", // Set this to your actual GraphQL endpoint
@@ -15,11 +18,22 @@ function App() {
       <div className="App">
         <ApolloProvider client={client}>
           <Routes>
-            <Route path="/symptom" />
+            <Route path="/symptom" element={<Symptom />}/>
+            <Route
+              path="/symptom/addSymptom"
+              element={<SymptomForm />}
+            />
+            <Route path="/symptom/edit/:id" element={<SymptomForm />}/>
           </Routes>
         </ApolloProvider>
       </div>
+
+      <div>
+        {/* <Symptom /> */}
+      </div>
     </Router>
+
+    
   );
 }
 
