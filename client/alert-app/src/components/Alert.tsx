@@ -9,6 +9,7 @@ import {
 } from "./ui/table";
 import { Button } from "./ui/button";
 import { useGetAlerts, useDeleteAlert } from "@/hooks/useAlert";
+import Spinner from "./Spinner";
 
 const Alert = () => {
   const tableHeads = [
@@ -20,8 +21,26 @@ const Alert = () => {
     "Actions",
   ];
 
-  const { data, refetch } = useGetAlerts();
+  const { data, refetch, error, loading } = useGetAlerts();
   const deleteAlert = useDeleteAlert();
+
+  if (loading)
+    return (
+      <div className="h-screen flex flex-col justify-center">
+        <Spinner />
+      </div>
+    );
+  if (error)
+    return (
+      <div className="h-screen flex flex-col justify-center gap-5 items-center">
+        <p>An unexpected error occurred.</p>
+        <Button onClick={() => refetch()}>Try Again</Button>
+        OR
+        <Link to="/">
+          <Button>Go to Hompage</Button>
+        </Link>
+      </div>
+    );
 
   return (
     <div>

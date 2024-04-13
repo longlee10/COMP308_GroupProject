@@ -31,7 +31,17 @@ const VitalSign = () => {
         <Spinner />
       </div>
     );
-  if (error) return <p>Error :(</p>;
+  if (error)
+    return (
+      <div className="h-screen flex flex-col justify-center gap-5 items-center">
+        <p>An unexpected error occurred.</p>
+        <Button onClick={() => refetch()}>Try Again</Button>
+        OR
+        <Link to="/">
+          <Button>Go to Hompage</Button>
+        </Link>
+      </div>
+    );
 
   return (
     <div>

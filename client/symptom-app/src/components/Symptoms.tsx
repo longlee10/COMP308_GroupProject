@@ -9,14 +9,30 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useGetSymptoms, useDeleteSymptom } from "@/hooks/useSymptom";
+import Spinner from "./Spinner";
 
 const Symptoms = () => {
   const { data, loading, error, refetch } = useGetSymptoms();
   const handleDelete = useDeleteSymptom();
   const tableHeads = ["Patient Name", "Symptoms", "Action"];
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (loading)
+    return (
+      <div className="h-screen flex flex-col justify-center">
+        <Spinner />
+      </div>
+    );
+  if (error)
+    return (
+      <div className="h-screen flex flex-col justify-center gap-5 items-center">
+        <p>An unexpected error occurred.</p>
+        <Button onClick={() => refetch()}>Try Again</Button>
+        OR
+        <Link to="/">
+          <Button>Go to Hompage</Button>
+        </Link>
+      </div>
+    );
 
   return (
     <div>

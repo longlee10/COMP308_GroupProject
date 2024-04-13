@@ -9,12 +9,31 @@ import {
 } from "../components/ui/table";
 import { useGetTip, useDeleteTip } from "@/hooks/useTip";
 import { Button } from "./ui/button";
+import Spinner from "./Spinner";
 
 const TipList = () => {
-  const { data, refetch } = useGetTip();
+  const { data, refetch, loading, error } = useGetTip();
   const deleteTip = useDeleteTip();
 
   const tableHeads = ["Title", "Description", "Actions"];
+
+  if (loading)
+    return (
+      <div className="h-screen flex flex-col justify-center">
+        <Spinner />
+      </div>
+    );
+  if (error)
+    return (
+      <div className="h-screen flex flex-col justify-center gap-5 items-center">
+        <p>An unexpected error occurred.</p>
+        <Button onClick={() => refetch()}>Try Again</Button>
+        OR
+        <Link to="/">
+          <Button>Go to Hompage</Button>
+        </Link>
+      </div>
+    );
 
   return (
     <div>
