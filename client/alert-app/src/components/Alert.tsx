@@ -8,7 +8,7 @@ import {
   Table,
 } from "./ui/table";
 import { Button } from "./ui/button";
-import { useGetAlerts } from "@/hooks/useAlert";
+import { useGetAlerts, useDeleteAlert } from "@/hooks/useAlert";
 
 const Alert = () => {
   const tableHeads = [
@@ -20,7 +20,8 @@ const Alert = () => {
     "Actions",
   ];
 
-  const { data } = useGetAlerts();
+  const { data, refetch } = useGetAlerts();
+  const deleteAlert = useDeleteAlert();
 
   return (
     <div>
@@ -46,18 +47,24 @@ const Alert = () => {
             </TableHeader>
             <TableBody>
               {data?.alerts &&
-                data?.alerts.map((tip) => (
-                  <TableRow key={tip.id}>
-                    <TableCell>{tip.patientName}</TableCell>
-                    <TableCell>{tip.responderName}</TableCell>
-                    <TableCell>{tip.responderPhone}</TableCell>
-                    <TableCell>{tip.responderAddress}</TableCell>
-                    <TableCell>{tip.message}</TableCell>
+                data?.alerts.map((alert) => (
+                  <TableRow key={alert.id}>
+                    <TableCell>{alert.patientName}</TableCell>
+                    <TableCell>{alert.responderName}</TableCell>
+                    <TableCell>{alert.responderPhone}</TableCell>
+                    <TableCell>{alert.responderAddress}</TableCell>
+                    <TableCell>{alert.message}</TableCell>
                     <TableCell className="flex gap-3">
-                      <Link to={``}>
+                      <Link to={`/alert/edit/${alert.id}`}>
                         <Button>Edit</Button>
                       </Link>
-                      <Button className="bg-red-500 hover:bg-red-600">
+                      <Button
+                        className="bg-red-500 hover:bg-red-600"
+                        onClick={() => {
+                          deleteAlert(alert.id);
+                          refetch();
+                        }}
+                      >
                         Delete
                       </Button>
                     </TableCell>
