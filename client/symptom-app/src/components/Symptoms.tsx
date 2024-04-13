@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/table";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
-import { useGetCheckList } from "@/useCheckList";
+import { useGetSymptoms } from "@/hooks/useSymptom";
 
 const Symptoms = () => {
-  const { data, loading, error } = useGetCheckList();
+  const { data, loading, error } = useGetSymptoms();
   const tableHeads = ["Patient Name", "Symptoms", "Action"];
 
   if (loading) return <p>Loading...</p>;
