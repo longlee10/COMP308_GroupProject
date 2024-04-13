@@ -18,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/alert" element={<Alert />} />
             <Route path="/alert/add" element={<AlertForm />} />
+            <Route path="/alert/edit/:id" element={<AlertForm />} />
           </Routes>
         </ApolloProvider>
       </div>

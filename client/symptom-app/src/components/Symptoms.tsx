@@ -1,21 +1,20 @@
-import { Link } from "react-router-dom";
 import {
-  TableHeader,
-  TableRow,
-  TableHead,
+  Table,
   TableBody,
   TableCell,
-  Table,
-} from "../components/ui/table";
-import { useGetTip, useDeleteTip } from "@/hooks/useTip";
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
+import { useGetSymptoms, useDeleteSymptom } from "@/hooks/useSymptom";
 import Spinner from "./Spinner";
 
-const TipList = () => {
-  const { data, refetch, loading, error } = useGetTip();
-  const deleteTip = useDeleteTip();
-
-  const tableHeads = ["Title", "Description", "Actions"];
+const Symptoms = () => {
+  const { data, loading, error, refetch } = useGetSymptoms();
+  const handleDelete = useDeleteSymptom();
+  const tableHeads = ["Patient Name", "Symptoms", "Action"];
 
   if (loading)
     return (
@@ -37,16 +36,16 @@ const TipList = () => {
 
   return (
     <div>
-      <Link to={"/motivation/addTips"}>
-        <Button>Create Motivation Tip</Button>
+      <Link to="/symptom/addSymptom">
+        <Button> Add Symptom </Button>
       </Link>
-      {data?.dailyTips.length === 0 ? (
+
+      {data?.checklists.length === 0 ? (
         <div className="h-screen flex flex-col justify-center">
-          <p className="text-xl m-auto">There is no tip recored.</p>
+          <p className="text-xl m-auto">There is no symptom recorded.</p>
         </div>
       ) : (
         <>
-          <h1 className="text-center text-2xl mt-5">Your Daily Tips</h1>
           <Table className="w-3/5 m-auto mt-5">
             <TableHeader>
               <TableRow>
@@ -58,19 +57,21 @@ const TipList = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.dailyTips &&
-                data?.dailyTips.map((tip) => (
-                  <TableRow key={tip.id}>
-                    <TableCell>{tip.title}</TableCell>
-                    <TableCell>{tip.description}</TableCell>
-                    <TableCell className="flex gap-3">
-                      <Link to={`/motivation/edit/${tip.id}`}>
+              {data?.checklists &&
+                data?.checklists.map((checkList) => (
+                  <TableRow key={checkList.id}>
+                    <TableCell>{checkList.patientName}</TableCell>
+                    <TableCell>
+                      {checkList.selectedSymptoms.join(", ")}
+                    </TableCell>
+                    <TableCell>
+                      <Link to={`/symptom/edit/${checkList.id}`}>
                         <Button>Edit</Button>
                       </Link>
                       <Button
-                        className="bg-red-500 hover:bg-red-600"
+                        className="bg-red-500 hover:bg-red-600 ms-3"
                         onClick={() => {
-                          deleteTip(tip.id);
+                          handleDelete(checkList.id);
                           refetch();
                         }}
                       >
@@ -87,4 +88,4 @@ const TipList = () => {
   );
 };
 
-export default TipList;
+export default Symptoms;

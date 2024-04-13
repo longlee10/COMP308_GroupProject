@@ -4,9 +4,11 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { UserData } from "@/types";
 import { Link } from "react-router-dom";
+import { useLogout } from "@/hooks";
 
-function NavBar() {
+function NavBar({ user }: { user: UserData }) {
   const navBarsItems = [
     { name: "Home", path: "/" },
     { name: "Vital Signs", path: "/vital-sign" },
@@ -15,6 +17,9 @@ function NavBar() {
     { name: "Symptoms", path: "/symptom" },
     { name: "Game", path: "/game" },
   ];
+
+  const logout = useLogout();
+
   return (
     <NavigationMenu className="mb-10 p-3 flex justify-between">
       <NavigationMenuList>
@@ -29,42 +34,27 @@ function NavBar() {
         })}
       </NavigationMenuList>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link to="#" className={navigationMenuTriggerStyle()}>
-            Login
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link to="#" className={navigationMenuTriggerStyle()}>
-            Logout
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>USERNAME</NavigationMenuItem>
+        {user.currentUser ? (
+          <>
+            <NavigationMenuItem
+              className={`${navigationMenuTriggerStyle()} cursor-pointer`}
+              onClick={logout}
+            >
+              Logout
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              {user?.currentUser.username}
+            </NavigationMenuItem>
+          </>
+        ) : (
+          <NavigationMenuItem>
+            <Link to="/auth" className={navigationMenuTriggerStyle()}>
+              Login or Register
+            </Link>
+          </NavigationMenuItem>
+        )}
       </NavigationMenuList>
     </NavigationMenu>
-
-    // <Navbar expand="lg" className="bg-body-tertiary mb-5">
-    //   <Container>
-    //     <Navbar.Brand>Vital Hub</Navbar.Brand>
-    //     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    //     <Navbar.Collapse id="basic-navbar-nav">
-    //       <Nav className="me-auto gap-3">
-    //         <Nav.Item>
-    //           <Link to="/vital-sign">Vital Sign</Link>
-    //         </Nav.Item>
-    //         <Nav.Item>
-    //           <Link to="/alert">Alert</Link>
-    //         </Nav.Item>
-    //         <Nav.Item>
-    //           <Link to="/motivation">Motivation</Link>
-    //         </Nav.Item>
-    //         <Nav.Item>
-    //           <Link to="/symptom">Symptom</Link>
-    //         </Nav.Item>
-    //       </Nav>
-    //     </Navbar.Collapse>
-    //   </Container>
-    // </Navbar>
   );
 }
 

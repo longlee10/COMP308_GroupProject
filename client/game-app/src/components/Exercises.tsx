@@ -7,11 +7,7 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import useGames, { Game } from "@/generateGames";
-import biceps from "../assets/biceps.gif";
-import chest from "../assets/chest.gif";
-import legs from "../assets/legs.gif";
-import back from "../assets/back.gif";
-import abs from "../assets/abs.gif";
+import { biceps, chest, legs, back, abs } from "../images";
 
 const Exercises = ({ level }: { level: string }) => {
   const game = useGames();

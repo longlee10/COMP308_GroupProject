@@ -1,6 +1,7 @@
 import { LOGIN_MUTATION, REGISTER_MUTATION } from "@/queries/authQueries";
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type UpdateFunction = (input: string) => void;
 
@@ -9,6 +10,7 @@ const useAuth = (setActiveTab?: UpdateFunction) => {
   const [authError, setAuthError] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const [register] = useMutation(REGISTER_MUTATION, {
     onCompleted: () => {
@@ -29,6 +31,9 @@ const useAuth = (setActiveTab?: UpdateFunction) => {
       );
       // notify the user
       alert("Login successful!");
+      // refresh page
+      navigate("/");
+      window.location.reload();
     },
     onError: (error) => setAuthError(error.message || "Login failed"),
   });
