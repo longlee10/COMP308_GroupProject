@@ -17,9 +17,11 @@ const useGetTip = () => {
 };
 
 const useGetTipById = (id: string) => {
-  return useQuery<DailyTipData>(TIP_BY_ID, {
-    variables: { id },
-  });
+  return id
+    ? useQuery<DailyTipData>(TIP_BY_ID, {
+        variables: { id },
+      })
+    : { data: undefined };
 };
 
 const useAddTip = () => {
