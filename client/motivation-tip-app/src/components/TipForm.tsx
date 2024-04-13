@@ -1,33 +1,51 @@
-import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DailyTipFormData } from "@/entities/types";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  useAddTip,
+  useEditTip,
+  useGetTip,
+  useGetTipById,
+} from "@/hooks/useTip";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { useAddTip, useGetTip } from "@/hooks/useTip";
-import { useNavigate } from "react-router-dom";
+import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 
 const AlertForm = () => {
+  const { id } = useParams();
+  const addTip = useAddTip();
+  const editTip = useEditTip();
+  const { refetch } = useGetTip();
+  const { data } = useGetTipById(id!);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<DailyTipFormData>({
     title: "",
     description: "",
   });
 
-  const addTip = useAddTip();
-  const { refetch } = useGetTip();
-  const navigate = useNavigate();
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await addTip(formData);
+      id ? await editTip(id, formData) : await addTip(formData);
     } catch (error) {
       console.error("Error creating alert:", error);
     }
     navigate("/motivation");
     refetch();
   };
+
+  useEffect(() => {
+    if (data) {
+      const { dailyTip } = data;
+      setFormData({
+        title: dailyTip.title,
+        description: dailyTip.description,
+      });
+    }
+  }, [data]);
 
   return (
     <div className="container mx-auto mt-4 max-w-md">
@@ -42,6 +60,7 @@ const AlertForm = () => {
               <Input
                 id="title"
                 placeholder="Enter title..."
+                defaultValue={data?.dailyTip.title}
                 type="text"
                 onChange={(e) =>
                   setFormData({ ...formData, title: e.target.value })
@@ -53,6 +72,7 @@ const AlertForm = () => {
               <Textarea
                 id="description"
                 placeholder="Enter description..."
+                defaultValue={data?.dailyTip.description}
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
                 }

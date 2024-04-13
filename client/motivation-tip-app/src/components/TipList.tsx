@@ -7,11 +7,13 @@ import {
   TableCell,
   Table,
 } from "../components/ui/table";
-import { useGetTip } from "@/hooks/useTip";
+import { useGetTip, useDeleteTip } from "@/hooks/useTip";
 import { Button } from "./ui/button";
 
 const TipList = () => {
-  const { data } = useGetTip();
+  const { data, refetch } = useGetTip();
+  const deleteTip = useDeleteTip();
+
   const tableHeads = ["Title", "Description", "Actions"];
 
   return (
@@ -43,10 +45,16 @@ const TipList = () => {
                     <TableCell>{tip.title}</TableCell>
                     <TableCell>{tip.description}</TableCell>
                     <TableCell className="flex gap-3">
-                      <Link to={``}>
+                      <Link to={`/motivation/edit/${tip.id}`}>
                         <Button>Edit</Button>
                       </Link>
-                      <Button className="bg-red-500 hover:bg-red-600">
+                      <Button
+                        className="bg-red-500 hover:bg-red-600"
+                        onClick={() => {
+                          deleteTip(tip.id);
+                          refetch();
+                        }}
+                      >
                         Delete
                       </Button>
                     </TableCell>

@@ -18,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/motivation" element={<TipList />} />
             <Route path="/motivation/addTips" element={<TipForm />} />
+            <Route path="/motivation/edit/:id" element={<TipForm />} />
           </Routes>
         </ApolloProvider>
       </div>
