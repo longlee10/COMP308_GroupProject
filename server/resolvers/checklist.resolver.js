@@ -6,9 +6,9 @@ const resolvers = {
       const { isAuthenticated } = req;
 
       try {
-        if (!isAuthenticated) {
-          throw new Error("User is not authenticated");
-        }
+        // if (!isAuthenticated) {
+        //   throw new Error("User is not authenticated");
+        // }
 
         const checklists = await Checklist.find({});
         return checklists;
@@ -41,9 +41,9 @@ const resolvers = {
       const { patientName, selectedSymptoms } = args;
 
       try {
-        if (!isAuthenticated) {
-          throw new Error("User is not authenticated");
-        }
+        // if (!isAuthenticated) {
+        //   throw new Error("User is not authenticated");
+        // }
 
         const checklist = await Checklist.create({
           patientName,

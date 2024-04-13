@@ -11,3 +11,8 @@ export interface DailyTipsData {
 export interface DailyTipData {
   dailyTip: DailyTip;
 }
+
+export interface DailyTipFormData {
+  title: string;
+  description: string;
+}

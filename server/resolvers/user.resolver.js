@@ -61,7 +61,7 @@ const resolvers = {
 
       try {
         // Verify and decode the JWT. Note: Make sure to handle errors appropriately in a real app
-        const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET);
+        const tokenDecoded = jwt.verify(token, jwtSecretKey);
         return tokenDecoded;
       } catch (error) {
         // Token verification failed
