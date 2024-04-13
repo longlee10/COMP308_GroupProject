@@ -30,7 +30,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             {/* Should add ! to ensure only display when logged in ???*/}
             {!data?.currentUser ? (
-              <Route path="auth" element={<UserApp />} />
+              <Route path="/auth" element={<UserApp />} />
             ) : (
               <>
                 <Route path="/vital-sign" element={<VitalSignApp />} />
