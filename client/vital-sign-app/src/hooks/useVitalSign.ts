@@ -6,6 +6,7 @@ import {
   GET_VITAL_SIGN_BY_ID,
   VITAL_SIGNS,
   PREDICT_DISEASE,
+  DELETE_VITAL_SIGN,
 } from "../queries/vitalSignQueries";
 import {
   PredictionData,
@@ -99,10 +100,28 @@ const usePredictDisease = () => {
   return { handlePredict, data, loading };
 };
 
+const useDeleteVitalSign = () => {
+  const [deleteVitalSign] = useMutation(DELETE_VITAL_SIGN);
+  const navigate = useNavigate();
+
+  const handleDelete = (id: String) => {
+    deleteVitalSign({
+      variables: {
+        id,
+      },
+    });
+
+    navigate("/vital-sign");
+  };
+
+  return handleDelete;
+};
+
 export {
   useAddVitalSign,
   useUpdateVitalSign,
   useGetVitalSignById,
   useGetVitalSigns,
   usePredictDisease,
+  useDeleteVitalSign,
 };

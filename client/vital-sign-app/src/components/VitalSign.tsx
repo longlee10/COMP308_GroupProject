@@ -6,13 +6,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetVitalSigns } from "@/hooks/useVitalSign";
+import { useGetVitalSigns, useDeleteVitalSign } from "@/hooks/useVitalSign";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import Spinner from "./Spinner";
 
 const VitalSign = () => {
-  const { loading, error, data: vitalSignsData } = useGetVitalSigns();
+  const { loading, error, data: vitalSignsData, refetch } = useGetVitalSigns();
+  const handleDelete = useDeleteVitalSign();
 
   const tableHeads = [
     "Temperature",
@@ -24,7 +25,12 @@ const VitalSign = () => {
     "Action",
   ];
 
-  if (loading) return <Spinner />;
+  if (loading)
+    return (
+      <div className="h-screen flex flex-col justify-center">
+        <Spinner />
+      </div>
+    );
   if (error) return <p>Error :(</p>;
 
   return (
@@ -68,6 +74,15 @@ const VitalSign = () => {
                       <Link to={`/vital-sign/predictDisease/${vitalSign.id}`}>
                         <Button>Predict Disease</Button>
                       </Link>
+                      <Button
+                        className="bg-red-500 hover:bg-red-600"
+                        onClick={() => {
+                          handleDelete(vitalSign.id);
+                          refetch();
+                        }}
+                      >
+                        Delete
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -71,10 +71,19 @@ mutation PredictDiseaseFromVitalSigns(
 }
 `;
 
+const DELETE_VITAL_SIGN = gql`
+  mutation DeleteVitalSign($id: ID!) {
+  deleteVitalSign(id: $id) {
+    id
+  }
+}
+`;
+
 export {
   VITAL_SIGNS,
   ADD_VITAL_SIGN,
   GET_VITAL_SIGN_BY_ID,
   UPDATE_VITAL_SIGN,
   PREDICT_DISEASE,
+  DELETE_VITAL_SIGN,
 };
