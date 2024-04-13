@@ -61,12 +61,6 @@ const AlertForm = () => {
             <Button type="submit" className="mt-3 m-auto">
               Submit
             </Button>
-            <Button
-              onClick={() => navigate("/motivation")}
-              className="mt-3 m-auto"
-            >
-              Go Back
-            </Button>
           </form>
         </CardContent>
       </Card>
