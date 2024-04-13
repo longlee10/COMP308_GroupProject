@@ -7,7 +7,7 @@ import {
   TableCell,
   Table,
 } from "../components/ui/table";
-import { useGetTip } from "@/useTip";
+import { useGetTip } from "@/hooks/useTip";
 import { Button } from "./ui/button";
 
 const TipList = () => {
@@ -16,7 +16,7 @@ const TipList = () => {
 
   return (
     <div>
-      <Link to={"/motivation/add"}>
+      <Link to={"/motivation/addTips"}>
         <Button>Create Motivation Tip</Button>
       </Link>
       {data?.dailyTips.length === 0 ? (
