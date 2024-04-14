@@ -24,7 +24,6 @@ const vitalSignSchema = new Schema(
     },
     disease: {
       type: Boolean,
-      default: false,
     },
     patient: {
       type: Schema.Types.ObjectId,
