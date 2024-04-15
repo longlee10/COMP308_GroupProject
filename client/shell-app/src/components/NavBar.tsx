@@ -21,7 +21,7 @@ function NavBar({ user }: { user: UserData }) {
   const logout = useLogout();
 
   return (
-    <NavigationMenu className="mb-10 p-3 flex justify-between">
+    <NavigationMenu className="mb-5 p-3 flex justify-between">
       <NavigationMenuList>
         {navBarsItems.map((navBar, index) => {
           return (

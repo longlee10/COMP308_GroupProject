@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar";
 import { useGetCurrentUser } from "./hooks";
 import { Button } from "./components/ui/button";
 import Spinner from "./components/Spinner";
+import Footer from "./components/Footer";
 
 const UserApp = lazy(() => import("userApp/App"!));
 const VitalSignApp = lazy(() => import("vitalSignApp/App"!));
@@ -53,6 +54,7 @@ function App() {
                 </>
               )}
             </Routes>
+            <Footer />
           </Router>
         </Suspense>
       </div>
