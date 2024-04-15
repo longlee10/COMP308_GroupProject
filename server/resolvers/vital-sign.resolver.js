@@ -7,25 +7,23 @@ import VitalSign from "../models/vital-sign.model.js";
 // Load the vital signs data
 const vitalSignsDataPath = path.join(__dirname, "data/vital-signs.json");
 const vitalSigns = JSON.parse(fs.readFileSync(vitalSignsDataPath));
-// threshold value for disease prediction
-const vitalSignThreshold = 0.5;
 
 // build neural network using a sequential model
-const createModel = (learningRate = 0.001) => {
+const createModel = (learningRate = 0.005) => {
   const model = tf.sequential();
   // Add the first layer with relu activation
   model.add(
     tf.layers.dense({
-      inputShape: [5], // Four input features: temperature, bloodPressure, heartRate, respiratoryRate, oxygenSaturation
-      units: 8, // Experiment with the number of units
-      activation: "sigmoid",
+      inputShape: [5], // Five input features: temperature, bloodPressure, heartRate, respiratoryRate, oxygenSaturation
+      units: 64, // Experiment with the number of units
+      activation: "relu",
     })
   );
   // Add 2nd dense layer (optional, experiment with adding or removing layers)
   model.add(
     tf.layers.dense({
-      units: 4, // Experiment with the number of units
-      activation: "sigmoid",
+      units: 32, // Experiment with the number of units
+      activation: "relu",
     })
   );
   // Add the output layer with sigmoid activation for binary classification
@@ -38,7 +36,7 @@ const createModel = (learningRate = 0.001) => {
   // Compile the model
   model.compile({
     optimizer: tf.train.adam(learningRate), // Experiment with different learning rates
-    loss: "meanSquaredError", // Use meanSquaredError for binary classification
+    loss: "binaryCrossentropy", // Use binary crossentropy for binary classification
     metrics: ["accuracy"], // Include accuracy as a metric for evaluation
   });
 
@@ -51,7 +49,7 @@ const trainModel = async (
   trainingData,
   outputData,
   testingData,
-  noOfEpochs = 10
+  noOfEpochs = 5
 ) => {
   const startTime = Date.now();
   // train/fit the model for the fixed number of epochs
@@ -68,10 +66,11 @@ const trainModel = async (
     },
   });
 
+  // Predict the disease
   const results = model.predict(testingData);
   const predictedData = results.arraySync();
   console.log(predictedData);
-  return predictedData[0][0] > 0.5;
+  return predictedData[0][0];
 };
 
 const resolvers = {
@@ -246,16 +245,19 @@ const resolvers = {
         ]);
 
         // Train the model
-        await trainModel(model, trainingData, outputData, testingData);
+        const result = await trainModel(
+          model,
+          trainingData,
+          outputData,
+          testingData
+        );
 
-        // Predict the disease
-        const results = model.predict(testingData);
-        const predictedData = results.arraySync();
-        console.log(predictedData);
-        const result = predictedData[0][0] > vitalSignThreshold;
         const message = result
           ? "The patient may have a disease."
           : "The patient may not have a disease.";
+
+        vitalSign.disease = result === 1 ? true : false;
+        await vitalSign.save();
 
         return { result, message };
       } catch (error) {
