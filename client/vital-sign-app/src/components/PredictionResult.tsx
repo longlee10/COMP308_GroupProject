@@ -1,6 +1,6 @@
 import { usePredictDisease, useGetVitalSignById } from "@/hooks/useVitalSign";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Spinner from "./Spinner";
 import {
   Table,
@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { Button } from "./ui/button";
 
 const PredictionResult = () => {
   const { id } = useParams();
@@ -41,36 +42,41 @@ const PredictionResult = () => {
     );
 
   return (
-    <Table className="w-3/5 m-auto mt-5">
-      <TableHeader>
-        <TableRow>
-          {tableHeads.map((head) => (
-            <TableHead key={head} className="text-center">
-              {head}
-            </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell>{vitalSign?.vitalSign.temperature}</TableCell>
-          <TableCell>{vitalSign?.vitalSign.bloodPressure}</TableCell>
-          <TableCell>{vitalSign?.vitalSign.heartRate}</TableCell>
-          <TableCell>{vitalSign?.vitalSign.respiratoryRate}</TableCell>
-          <TableCell>{vitalSign?.vitalSign.oxygenSaturation}</TableCell>
-          <TableCell>{vitalSign?.vitalSign.patient?.username}</TableCell>
-          <TableCell
-            className={
-              data?.predictDisease.result
-                ? "text-red-500 font-bold"
-                : "text-black  font-bold"
-            }
-          >
-            {data?.predictDisease.message}
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+    <>
+      <Table className="w-3/5 m-auto mt-5">
+        <TableHeader>
+          <TableRow>
+            {tableHeads.map((head) => (
+              <TableHead key={head} className="text-center">
+                {head}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell>{vitalSign?.vitalSign.temperature}</TableCell>
+            <TableCell>{vitalSign?.vitalSign.bloodPressure}</TableCell>
+            <TableCell>{vitalSign?.vitalSign.heartRate}</TableCell>
+            <TableCell>{vitalSign?.vitalSign.respiratoryRate}</TableCell>
+            <TableCell>{vitalSign?.vitalSign.oxygenSaturation}</TableCell>
+            <TableCell>{vitalSign?.vitalSign.patient?.username}</TableCell>
+            <TableCell
+              className={
+                data?.predictDisease.result
+                  ? "text-red-500 font-bold"
+                  : "text-black  font-bold"
+              }
+            >
+              {data?.predictDisease.message}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      <Link to="/vital-sign">
+        <Button>Back to Vital Signs</Button>
+      </Link>
+    </>
   );
 };
 

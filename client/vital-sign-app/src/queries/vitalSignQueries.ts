@@ -9,6 +9,7 @@ query {
       respiratoryRate
       temperature
       oxygenSaturation
+      disease
       patient {
         username
       }

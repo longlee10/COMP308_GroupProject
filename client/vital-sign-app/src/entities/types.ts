@@ -5,6 +5,7 @@ export interface VitalSign {
   heartRate: number;
   respiratoryRate: number;
   oxygenSaturation: number;
+  disease: boolean;
   patient: Patient;
 }
 

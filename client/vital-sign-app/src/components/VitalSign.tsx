@@ -22,6 +22,8 @@ const VitalSign = () => {
     "Respiratory Rate",
     "Oxygen Saturation",
     "Patient",
+    "Has Disease?",
+    "Predict Disease",
     "Action",
   ];
 
@@ -75,15 +77,33 @@ const VitalSign = () => {
                     <TableCell>{vitalSign.respiratoryRate}</TableCell>
                     <TableCell>{vitalSign.oxygenSaturation}</TableCell>
                     <TableCell>{vitalSign.patient?.username}</TableCell>
+                    <TableCell
+                      className={
+                        vitalSign.disease
+                          ? "text-red-500 font-bold"
+                          : "font-bold"
+                      }
+                    >
+                      {vitalSign.disease === true
+                        ? "Yes"
+                        : vitalSign.disease === false
+                        ? "No"
+                        : "No record"}
+                    </TableCell>
+                    <TableCell>
+                      <Link to={`/vital-sign/predictDisease/${vitalSign.id}`}>
+                        <Button>
+                          {vitalSign.disease === null
+                            ? "Predict"
+                            : "Predict Again"}
+                        </Button>
+                      </Link>
+                    </TableCell>
                     <TableCell className="flex gap-3">
                       <Link to={`/vital-sign/edit/${vitalSign.id}`}>
                         <Button>Edit</Button>
                       </Link>
-                      {/* This is only available for nurse -> hide if user is patient */}
 
-                      <Link to={`/vital-sign/predictDisease/${vitalSign.id}`}>
-                        <Button>Predict Disease</Button>
-                      </Link>
                       <Button
                         className="bg-red-500 hover:bg-red-600"
                         onClick={() => {
