@@ -1,5 +1,5 @@
 import { usePredictDisease, useGetVitalSignById } from "@/hooks/useVitalSign";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "./Spinner";
 import {
@@ -11,11 +11,14 @@ import {
   TableRow,
 } from "./ui/table";
 import { Button } from "./ui/button";
+import { VitalSign } from "@/entities/types";
+import Chart from "./Chart";
 
 const PredictionResult = () => {
   const { id } = useParams();
   const { handlePredict, data, loading } = usePredictDisease();
   const vitalSign = useGetVitalSignById(id!);
+  const [chartData, setChartData] = useState<VitalSign[]>([]);
 
   const tableHeads = [
     "Temperature",
@@ -31,6 +34,10 @@ const PredictionResult = () => {
     handlePredict(id!);
   }, []);
 
+  useEffect(() => {
+    if (vitalSign) setChartData([vitalSign.vitalSign]);
+  }, [vitalSign]);
+
   if (loading)
     return (
       <div className="w-1/2 m-auto text-center">
@@ -42,7 +49,7 @@ const PredictionResult = () => {
     );
 
   return (
-    <>
+    <div className="flex flex-col gap-5">
       <Table className="w-3/5 m-auto mt-5">
         <TableHeader>
           <TableRow>
@@ -76,7 +83,8 @@ const PredictionResult = () => {
       <Link to="/vital-sign">
         <Button>Back to Vital Signs</Button>
       </Link>
-    </>
+      <Chart vital_signs={chartData} />
+    </div>
   );
 };
 
