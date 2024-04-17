@@ -252,11 +252,12 @@ const resolvers = {
           testingData
         );
 
-        const message = result
-          ? "The patient may have a disease."
-          : "The patient may not have a disease.";
+        const message =
+          result >= 0.5
+            ? "The patient may have a disease."
+            : "The patient may not have a disease.";
 
-        vitalSign.disease = result === 1 ? true : false;
+        vitalSign.disease = result >= 0.5 ? true : false;
         await vitalSign.save();
 
         return { result, message };
