@@ -21,6 +21,8 @@ const typeDefs = gql`
   type PredictResponse {
     result: Boolean
     message: String
+    loss: Float
+    accuracy: Float
   }
 
   type Query {

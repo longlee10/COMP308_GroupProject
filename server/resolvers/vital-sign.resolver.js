@@ -1,77 +1,20 @@
-import * as tf from "@tensorflow/tfjs-node";
-import fs from "fs";
 import path from "path";
 import __dirname from "../config/__dirname.js";
+
 import VitalSign from "../models/vital-sign.model.js";
 
-// Load the vital signs data
-const vitalSignsDataPath = path.join(__dirname, "data/vital-signs.json");
-const vitalSigns = JSON.parse(fs.readFileSync(vitalSignsDataPath));
+import {
+  convertCsvToJson,
+  processData,
+  splitData,
+  prepareInputData,
+  createModel,
+  trainModel,
+  evaluateModel,
+  predict,
+} from "../services/predict-vital-signs.service.js";
 
-// build neural network using a sequential model
-const createModel = (learningRate = 0.005) => {
-  const model = tf.sequential();
-  // Add the first layer with relu activation
-  model.add(
-    tf.layers.dense({
-      inputShape: [5], // Five input features: temperature, bloodPressure, heartRate, respiratoryRate, oxygenSaturation
-      units: 64, // Experiment with the number of units
-      activation: "relu",
-    })
-  );
-  // Add 2nd dense layer (optional, experiment with adding or removing layers)
-  model.add(
-    tf.layers.dense({
-      units: 32, // Experiment with the number of units
-      activation: "relu",
-    })
-  );
-  // Add the output layer with sigmoid activation for binary classification
-  model.add(
-    tf.layers.dense({
-      units: 1, // One output for the disease prediction
-      activation: "sigmoid",
-    })
-  );
-  // Compile the model
-  model.compile({
-    optimizer: tf.train.adam(learningRate), // Experiment with different learning rates
-    loss: "binaryCrossentropy", // Use binary crossentropy for binary classification
-    metrics: ["accuracy"], // Include accuracy as a metric for evaluation
-  });
-
-  return model;
-};
-
-// Train the model and predict the results for testing data
-const trainModel = async (
-  model,
-  trainingData,
-  outputData,
-  testingData,
-  noOfEpochs = 5
-) => {
-  const startTime = Date.now();
-  // train/fit the model for the fixed number of epochs
-  await model.fit(trainingData, outputData, {
-    epochs: noOfEpochs,
-    callbacks: {
-      //list of callbacks to be called during training
-      onEpochEnd: async (epoch, log) => {
-        console.log(
-          `Epoch ${epoch}: lossValue = ${log.loss}, accuracy = ${log.acc}`
-        );
-        console.log(`elapsed time: ${Date.now() - startTime} ms`);
-      },
-    },
-  });
-
-  // Predict the disease
-  const results = model.predict(testingData);
-  const predictedData = results.arraySync();
-  console.log(predictedData);
-  return predictedData[0][0];
-};
+const DISEASE_THRESHOLD = 0.5;
 
 const resolvers = {
   Query: {
@@ -212,58 +155,59 @@ const resolvers = {
           throw new Error("User is not authenticated");
         }
 
+        // Find the vital sign by id
         const vitalSign = await VitalSign.findById(id);
+
+        // Prepare the testing data
+        const inputData = prepareInputData(vitalSign);
+
+        // Load the vital signs data
+        const vitalSignsDataPath = path.join(__dirname, "data/vital-signs.csv");
+
+        // Convert CSV to JSON
+        const vitalSignsData = await convertCsvToJson(vitalSignsDataPath);
+
+        // Process the data
+        const processedData = processData(vitalSignsData);
+        console.log("in predictDisease - processedData: ", processedData);
+
+        // Split the data into training and testing data
+        const { trainingData, testingData } = splitData(processedData);
+        console.log("in predictDisease - trainingData: ", trainingData);
 
         // Load the model
         const model = createModel();
 
-        // Prepare the data for training
-        const trainingData = tf.tensor2d(
-          vitalSigns.map((item) => [
-            item.temperature,
-            item.bloodPressure,
-            item.heartRate,
-            item.respiratoryRate,
-            item.oxygenSaturation,
-          ])
-        );
-
-        // Prepare the output data for training
-        const outputData = tf.tensor2d(
-          vitalSigns.map((item) => [item.disease ? 1 : 0])
-        );
-
-        // Prepare the testing data
-        const testingData = tf.tensor2d([
-          [
-            vitalSign.temperature,
-            vitalSign.bloodPressure,
-            vitalSign.heartRate,
-            vitalSign.respiratoryRate,
-            vitalSign.oxygenSaturation,
-          ],
-        ]);
-
         // Train the model
-        const result = await trainModel(
-          model,
-          trainingData,
-          outputData,
-          testingData
-        );
+        await trainModel(model, trainingData, 10);
 
-        const message =
-          result >= 0.5
-            ? "The patient may have a disease."
-            : "The patient may not have a disease.";
+        // Evaluate the model
+        const { loss, accuracy } = evaluateModel(model, testingData);
+        console.log("in predictDisease - loss: ", loss);
+        console.log("in predictDisease - accuracy: ", accuracy);
 
-        vitalSign.disease = result >= 0.5 ? true : false;
+        // Predict the disease
+        const predictedData = predict(model, inputData);
+
+        const result = predictedData >= DISEASE_THRESHOLD;
+
+        // Update the vital sign with the predicted disease
+        vitalSign.disease = result;
         await vitalSign.save();
 
-        return { result, message };
+        const message = result
+          ? "The patient may have a disease."
+          : "The patient may not have a disease.";
+
+        return { result, message, loss, accuracy };
       } catch (error) {
         console.error("Error in predictDisease resolver: ", error);
-        return { result: null, message: error.message };
+        return {
+          result: null,
+          message: error.message,
+          loss: null,
+          accuracy: null,
+        };
       }
     },
   },
