@@ -21,7 +21,7 @@ const Benefits = () => {
   ];
 
   return (
-    <div className="flex justify-center gap-20 m-auto mb-20">
+    <div className="flex justify-center gap-16 m-auto mb-20">
       <Card className="w-[350px] mt-4">
         <CardHeader>
           <CardTitle>Use for Nurse Practioners</CardTitle>
