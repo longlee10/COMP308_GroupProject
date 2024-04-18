@@ -1,0 +1,29 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "COMP-308 Group Project",
+  "main": "server.js",
+  "scripts": {
+    "start:auth": "cd ./user-app && npm run deploy",
+    "start:vitalSign": "cd ./vital-sign-app && npm run deploy",
+    "start:alert": "cd ./alert-app && npm run deploy",
+    "start:checklist": "cd ./symptom-app && npm run deploy",
+    "start:dailyTip": "cd ./motivation-tip-app && npm run deploy",
+    "start:game": "cd ./game-app && npm run deploy",
+    "start:shell": "cd ./shell-app && npm run dev",
+    "start": "concurrently -n \"AUTH,VITALSIGN,ALERT,CHECKLIST,DAILYTIP,GAME,SHELL\" -c \"auto\" \"npm run start:auth\" \"npm run start:vitalSign\" \"npm run start:alert\" \"npm run start:checklist\" \"npm run start:dailyTip\" \"npm run start:game\" \"npm run start:shell\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longlee10/COMP308_GroupProject.git"
+  },
+  "author": "Hoang Long Le",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/longlee10/COMP308_GroupProject/issues"
+  },
+  "homepage": "https://github.com/longlee10/COMP308_GroupProject#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
