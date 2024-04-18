@@ -10,7 +10,8 @@
     "start:alert": "nodemon ./microservices/alert.microservice.js",
     "start:checklist": "nodemon ./microservices/checklist.microservice.js",
     "start:dailyTip": "nodemon ./microservices/daily-tip.microservice.js",
-    "start:server": "nodemon ./server.js"
+    "start:server": "nodemon ./server.js",
+    "start": "concurrently -n \"AUTH,VITALSIGN,ALERT,CHECKLIST,DAILYTIP\" -c \"cyan,green,red,yellow,blue\" \"npm run start:auth\" \"npm run start:vitalSign\" \"npm run start:alert\" \"npm run start:checklist\" \"npm run start:dailyTip\""
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.0"
   }
 }
