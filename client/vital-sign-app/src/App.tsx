@@ -1,7 +1,8 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.css";
 import VitalSign from "./components/VitalSign";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import VitalSignForm from "./components/VitalSignForm";
+import PredictionResult from "./components/PredictionResult";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
@@ -16,9 +17,16 @@ function App() {
       <div className="App">
         <ApolloProvider client={client}>
           <Routes>
-            <Route path="/" element={<VitalSign />} />
-            <Route path="/addVitalSign" element={<VitalSignForm />} />
-            <Route path="/edit/:id" element={<VitalSignForm />} />
+            <Route path="/vital-sign" element={<VitalSign />} />
+            <Route
+              path="/vital-sign/addVitalSign"
+              element={<VitalSignForm />}
+            />
+            <Route path="/vital-sign/edit/:id" element={<VitalSignForm />} />
+            <Route
+              path="/vital-sign/predictDisease/:id"
+              element={<PredictionResult />}
+            />
           </Routes>
         </ApolloProvider>
       </div>

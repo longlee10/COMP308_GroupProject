@@ -1,12 +1,28 @@
 import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
+  type User {
+    id: ID
+    fullName: String
+    username: String
+  }
+
   type VitalSign {
     id: ID
     temperature: Float
-    bloodPressure: String
+    bloodPressure: Float
     heartRate: Float
     respiratoryRate: Float
+    oxygenSaturation: Float
+    disease: Boolean
+    patient: User
+  }
+
+  type PredictResponse {
+    result: Boolean
+    message: String
+    loss: Float
+    accuracy: Float
   }
 
   type Query {
@@ -17,18 +33,21 @@ const typeDefs = gql`
   type Mutation {
     createVitalSign(
       temperature: Float!
-      bloodPressure: String!
+      bloodPressure: Float!
       heartRate: Float!
       respiratoryRate: Float!
+      oxygenSaturation: Float!
     ): VitalSign
     updateVitalSign(
       id: ID!
       temperature: Float!
-      bloodPressure: String!
+      bloodPressure: Float!
       heartRate: Float!
       respiratoryRate: Float!
+      oxygenSaturation: Float!
     ): VitalSign
     deleteVitalSign(id: ID!): VitalSign
+    predictDisease(id: ID!): PredictResponse
   }
 `;
 

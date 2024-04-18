@@ -1,11 +1,12 @@
-import { RefObject } from "react";
-
 export interface VitalSign {
   id: string;
   temperature: number;
-  bloodPressure: string;
+  bloodPressure: number;
   heartRate: number;
   respiratoryRate: number;
+  oxygenSaturation: number;
+  disease: boolean;
+  patient: Patient;
 }
 
 export interface VitalSignsData {
@@ -17,8 +18,28 @@ export interface VitalSignData {
 }
 
 export interface VitalSignFormData {
-  temperature: RefObject<HTMLInputElement>;
-  bloodPressure: RefObject<HTMLInputElement>;
-  heartRate: RefObject<HTMLInputElement>;
-  respiratoryRate: RefObject<HTMLInputElement>;
+  temperature: number;
+  bloodPressure: number;
+  heartRate: number;
+  respiratoryRate: number;
+  oxygenSaturation: number;
+}
+
+export interface PredictionResult {
+  result: boolean;
+  message: string;
+}
+
+export interface PredictionData {
+  predictDisease: PredictionResult;
+}
+
+export interface Patient {
+  id: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  address: string;
+  phone: string;
+  role: "patient" | "nurse";
 }

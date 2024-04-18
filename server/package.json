@@ -7,7 +7,11 @@
   "scripts": {
     "start:auth": "nodemon ./microservices/auth.microservice.js",
     "start:vitalSign": "nodemon ./microservices/vital-sign.microservice.js",
-    "start:server": "nodemon ./server.js"
+    "start:alert": "nodemon ./microservices/alert.microservice.js",
+    "start:checklist": "nodemon ./microservices/checklist.microservice.js",
+    "start:dailyTip": "nodemon ./microservices/daily-tip.microservice.js",
+    "start:server": "nodemon ./server.js",
+    "start": "concurrently -n \"AUTH,VITALSIGN,ALERT,CHECKLIST,DAILYTIP\" -c \"cyan,green,red,yellow,blue\" \"npm run start:auth\" \"npm run start:vitalSign\" \"npm run start:alert\" \"npm run start:checklist\" \"npm run start:dailyTip\""
   },
   "repository": {
     "type": "git",
@@ -22,12 +26,14 @@
   "dependencies": {
     "@apollo/federation": "^0.38.1",
     "@apollo/gateway": "^2.7.1",
+    "@tensorflow/tfjs-node": "^4.17.0",
     "apollo-server-express": "^3.13.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.19.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "csvtojson": "^2.0.10",
     "dotenv": "^16.4.4",
     "express": "^4.18.3",
     "express-session": "^1.17.2",
@@ -38,6 +44,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.0"
   }
 }

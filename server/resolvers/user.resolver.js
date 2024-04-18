@@ -10,8 +10,9 @@ const jwtSecretKey = config.secretKey;
 const generateToken = (res, user) => {
   const token = jwt.sign(
     {
+      userId: user._id,
       username: user.username,
-      role: user.role,
+      userRole: user.role,
     },
     jwtSecretKey,
     {
@@ -31,6 +32,26 @@ const generateToken = (res, user) => {
 
 const resolvers = {
   Query: {
+    users: async () => {
+      try {
+        const users = await User.find({});
+        return users;
+      } catch (error) {
+        console.error("Error in users resolver: ", error);
+        return [];
+      }
+    },
+
+    user: async (parent, args) => {
+      try {
+        const user = await User.findById(args._id);
+        return user;
+      } catch (error) {
+        console.error("Error in user resolver: ", error);
+        return null;
+      }
+    },
+
     currentUser: (parent, args, { req }) => {
       // Assuming the JWT token is sent via an HTTP-only cookie named 'token'
       const token = req.cookies.token;
@@ -40,7 +61,7 @@ const resolvers = {
 
       try {
         // Verify and decode the JWT. Note: Make sure to handle errors appropriately in a real app
-        const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET);
+        const tokenDecoded = jwt.verify(token, jwtSecretKey);
         return tokenDecoded;
       } catch (error) {
         // Token verification failed

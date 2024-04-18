@@ -2,10 +2,18 @@ import bcrypt from "bcrypt";
 import { model, Schema } from "mongoose";
 
 const saltRounds = 10;
-const userRoles = ["patient", "nurse"];
+const userRoles = ["patient", "nurse", "responder"];
 
 const userSchema = new Schema(
   {
+    firstName: {
+      type: String,
+      default: "",
+    },
+    lastName: {
+      type: String,
+      default: "",
+    },
     username: {
       type: String,
       unique: true,
@@ -19,6 +27,15 @@ const userSchema = new Schema(
         "Password should be longer",
       ],
     },
+    address: {
+      type: String,
+      default: "",
+    },
+    phone: {
+      type: String,
+      default: "",
+      match: [/^\d{3}-\d{3}-\d{4}$/, "Please fill a valid phone number"],
+    },
     role: {
       type: String,
       enum: userRoles,
@@ -31,6 +48,18 @@ const userSchema = new Schema(
     collection: "users",
   }
 );
+
+// Set the 'fullname' virtual property
+userSchema
+  .virtual("fullName")
+  .get(function () {
+    return this.firstName + " " + this.lastName;
+  })
+  .set(function (fullName) {
+    const splitName = fullName.split(" ");
+    this.firstName = splitName[0] || "";
+    this.lastName = splitName[1] || "";
+  });
 
 // Use a pre-save hook to hash the user's password before saving the user
 userSchema.pre("save", function (next) {
