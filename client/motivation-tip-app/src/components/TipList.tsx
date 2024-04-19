@@ -11,9 +11,16 @@ import { useGetTip, useDeleteTip } from "@/hooks/useTip";
 import { Button } from "./ui/button";
 import Spinner from "./Spinner";
 
+type User = {
+  username: string;
+  role: "user" | "nurse";
+};
+
 const TipList = () => {
   const { data, refetch, loading, error } = useGetTip();
   const deleteTip = useDeleteTip();
+  // get user from local storage
+  const user: User = JSON.parse(localStorage.getItem("user")!);
 
   const tableHeads = ["Title", "Description", "Actions"];
 
@@ -37,9 +44,12 @@ const TipList = () => {
 
   return (
     <div>
-      <Link to={"/motivation/addTips"}>
-        <Button>Create Motivation Tip</Button>
-      </Link>
+      {user && user.role === "nurse" && (
+        <Link to={"/motivation/addTips"}>
+          <Button>Create Motivation Tip</Button>
+        </Link>
+      )}
+
       {data?.dailyTips.length === 0 ? (
         <div className="h-screen flex flex-col justify-center">
           <p className="text-xl m-auto">There is no tip recored.</p>
