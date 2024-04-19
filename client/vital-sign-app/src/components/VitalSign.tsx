@@ -11,9 +11,15 @@ import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import Spinner from "./Spinner";
 
+type User = {
+  username: string;
+  role: "user" | "nurse";
+};
+
 const VitalSign = () => {
   const { loading, error, data: vitalSignsData, refetch } = useGetVitalSigns();
   const handleDelete = useDeleteVitalSign();
+  const user: User = JSON.parse(localStorage.getItem("user")!);
 
   const tableHeads = [
     "Temperature",
@@ -47,9 +53,11 @@ const VitalSign = () => {
 
   return (
     <div>
-      <Link to="/vital-sign/addVitalSign">
-        <Button> Add Vital Sign </Button>
-      </Link>
+      {user && user.role === "nurse" && (
+        <Link to="/vital-sign/addVitalSign">
+          <Button> Add Vital Sign </Button>
+        </Link>
+      )}
 
       {vitalSignsData?.vitalSigns.length === 0 ? (
         <div className="h-screen flex flex-col justify-center">
@@ -60,11 +68,16 @@ const VitalSign = () => {
           <Table className="w-3/5 m-auto mt-5">
             <TableHeader>
               <TableRow>
-                {tableHeads.map((head) => (
-                  <TableHead key={head} className="text-center">
-                    {head}
-                  </TableHead>
-                ))}
+                {tableHeads
+                  .filter(
+                    (head) =>
+                      !(head === "Predict Disease" && user?.role !== "nurse")
+                  )
+                  .map((head) => (
+                    <TableHead key={head} className="text-center">
+                      {head}
+                    </TableHead>
+                  ))}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -90,15 +103,18 @@ const VitalSign = () => {
                         ? "No"
                         : "No record"}
                     </TableCell>
-                    <TableCell>
-                      <Link to={`/vital-sign/predictDisease/${vitalSign.id}`}>
-                        <Button>
-                          {vitalSign.disease === null
-                            ? "Predict"
-                            : "Predict Again"}
-                        </Button>
-                      </Link>
-                    </TableCell>
+                    {/* Display predict disease button only when user is in local storage */}
+                    {user && user.role === "nurse" && (
+                      <TableCell>
+                        <Link to={`/vital-sign/predictDisease/${vitalSign.id}`}>
+                          <Button>
+                            {vitalSign.disease === null
+                              ? "Predict"
+                              : "Predict Again"}
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    )}
                     <TableCell className="flex gap-3">
                       <Link to={`/vital-sign/edit/${vitalSign.id}`}>
                         <Button>Edit</Button>
