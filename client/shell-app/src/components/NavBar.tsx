@@ -43,7 +43,7 @@ function NavBar({ user }: { user: UserData }) {
               Logout
             </NavigationMenuItem>
             <NavigationMenuItem>
-              {user?.currentUser.username}
+              {`${user?.currentUser.username} (${user?.currentUser.__typename})`}
             </NavigationMenuItem>
           </>
         ) : (

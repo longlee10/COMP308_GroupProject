@@ -1,6 +1,6 @@
 export interface UserData {
   currentUser: {
     username: string;
-    __typename: string;
+    __typename: "User" | "Nurse";
   };
 }
