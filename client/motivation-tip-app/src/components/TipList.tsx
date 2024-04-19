@@ -13,7 +13,7 @@ import Spinner from "./Spinner";
 
 type User = {
   username: string;
-  role: "user" | "nurse";
+  role: "patient" | "nurse";
 };
 
 const TipList = () => {

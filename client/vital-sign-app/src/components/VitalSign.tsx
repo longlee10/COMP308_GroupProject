@@ -13,7 +13,7 @@ import Spinner from "./Spinner";
 
 type User = {
   username: string;
-  role: "user" | "nurse";
+  role: "patient" | "nurse";
 };
 
 const VitalSign = () => {
@@ -53,11 +53,9 @@ const VitalSign = () => {
 
   return (
     <div>
-      {user && user.role === "nurse" && (
-        <Link to="/vital-sign/addVitalSign">
-          <Button> Add Vital Sign </Button>
-        </Link>
-      )}
+      <Link to="/vital-sign/addVitalSign">
+        <Button> Add Vital Sign </Button>
+      </Link>
 
       {vitalSignsData?.vitalSigns.length === 0 ? (
         <div className="h-screen flex flex-col justify-center">
@@ -82,56 +80,64 @@ const VitalSign = () => {
             </TableHeader>
             <TableBody>
               {vitalSignsData?.vitalSigns &&
-                vitalSignsData?.vitalSigns.map((vitalSign) => (
-                  <TableRow key={vitalSign.id}>
-                    <TableCell>{vitalSign.temperature}</TableCell>
-                    <TableCell>{vitalSign.bloodPressure}</TableCell>
-                    <TableCell>{vitalSign.heartRate}</TableCell>
-                    <TableCell>{vitalSign.respiratoryRate}</TableCell>
-                    <TableCell>{vitalSign.oxygenSaturation}</TableCell>
-                    <TableCell>{vitalSign.patient?.username}</TableCell>
-                    <TableCell
-                      className={
-                        vitalSign.disease
-                          ? "text-red-500 font-bold"
-                          : "font-bold"
-                      }
-                    >
-                      {vitalSign.disease === true
-                        ? "Yes"
-                        : vitalSign.disease === false
-                        ? "No"
-                        : "No record"}
-                    </TableCell>
-                    {/* Display predict disease button only when user is in local storage */}
-                    {user && user.role === "nurse" && (
-                      <TableCell>
-                        <Link to={`/vital-sign/predictDisease/${vitalSign.id}`}>
-                          <Button>
-                            {vitalSign.disease === null
-                              ? "Predict"
-                              : "Predict Again"}
-                          </Button>
-                        </Link>
-                      </TableCell>
-                    )}
-                    <TableCell className="flex gap-3">
-                      <Link to={`/vital-sign/edit/${vitalSign.id}`}>
-                        <Button>Edit</Button>
-                      </Link>
-
-                      <Button
-                        className="bg-red-500 hover:bg-red-600"
-                        onClick={() => {
-                          handleDelete(vitalSign.id);
-                          refetch();
-                        }}
+                vitalSignsData?.vitalSigns
+                  .filter((vitalSign) =>
+                    user?.role === "patient"
+                      ? vitalSign.patient?.username === user.username
+                      : vitalSign
+                  )
+                  .map((vitalSign) => (
+                    <TableRow key={vitalSign.id}>
+                      <TableCell>{vitalSign.temperature}</TableCell>
+                      <TableCell>{vitalSign.bloodPressure}</TableCell>
+                      <TableCell>{vitalSign.heartRate}</TableCell>
+                      <TableCell>{vitalSign.respiratoryRate}</TableCell>
+                      <TableCell>{vitalSign.oxygenSaturation}</TableCell>
+                      <TableCell>{vitalSign.patient?.username}</TableCell>
+                      <TableCell
+                        className={
+                          vitalSign.disease
+                            ? "text-red-500 font-bold"
+                            : "font-bold"
+                        }
                       >
-                        Delete
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        {vitalSign.disease === true
+                          ? "Yes"
+                          : vitalSign.disease === false
+                          ? "No"
+                          : "No record"}
+                      </TableCell>
+                      {/* Display predict disease button only when user is in local storage */}
+                      {user && user.role === "nurse" && (
+                        <TableCell>
+                          <Link
+                            to={`/vital-sign/predictDisease/${vitalSign.id}`}
+                          >
+                            <Button>
+                              {vitalSign.disease === null
+                                ? "Predict"
+                                : "Predict Again"}
+                            </Button>
+                          </Link>
+                        </TableCell>
+                      )}
+                      <TableCell className="flex gap-3">
+                        <Link to={`/vital-sign/edit/${vitalSign.id}`}>
+                          <Button>Edit</Button>
+                        </Link>
+
+                        <Button
+                          className="bg-red-500 hover:bg-red-600"
+                          onClick={() => {
+                            handleDelete(vitalSign.id);
+                            refetch();
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </>
