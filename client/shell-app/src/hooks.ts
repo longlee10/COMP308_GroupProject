@@ -13,6 +13,8 @@ const useLogout = () => {
 
   const handleLogout = () => {
     logout();
+    // remove user from local storage
+    localStorage.removeItem("user");
     // refresh the page
     window.location.reload();
   };

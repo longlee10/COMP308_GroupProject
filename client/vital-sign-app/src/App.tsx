@@ -1,5 +1,5 @@
 // import "bootstrap/dist/css/bootstrap.css";
-import VitalSign from "./components/VitalSign";
+import VitalSigns from "./components/VitalSign";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import VitalSignForm from "./components/VitalSignForm";
 import PredictionResult from "./components/PredictionResult";
@@ -17,7 +17,7 @@ function App() {
       <div className="App">
         <ApolloProvider client={client}>
           <Routes>
-            <Route path="/vital-sign" element={<VitalSign />} />
+            <Route path="/vital-sign" element={<VitalSigns />} />
             <Route
               path="/vital-sign/addVitalSign"
               element={<VitalSignForm />}

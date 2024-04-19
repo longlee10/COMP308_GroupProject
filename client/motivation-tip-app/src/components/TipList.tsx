@@ -11,9 +11,16 @@ import { useGetTip, useDeleteTip } from "@/hooks/useTip";
 import { Button } from "./ui/button";
 import Spinner from "./Spinner";
 
+type User = {
+  username: string;
+  role: "patient" | "nurse";
+};
+
 const TipList = () => {
   const { data, refetch, loading, error } = useGetTip();
   const deleteTip = useDeleteTip();
+  // get user from local storage
+  const user: User = JSON.parse(localStorage.getItem("user")!);
 
   const tableHeads = ["Title", "Description", "Actions"];
 
@@ -37,9 +44,12 @@ const TipList = () => {
 
   return (
     <div>
-      <Link to={"/motivation/addTips"}>
-        <Button>Create Motivation Tip</Button>
-      </Link>
+      {user && user.role === "nurse" && (
+        <Link to={"/motivation/addTips"}>
+          <Button>Create Motivation Tip</Button>
+        </Link>
+      )}
+
       {data?.dailyTips.length === 0 ? (
         <div className="h-screen flex flex-col justify-center">
           <p className="text-xl m-auto">There is no tip recored.</p>
@@ -50,11 +60,23 @@ const TipList = () => {
           <Table className="w-3/5 m-auto mt-5">
             <TableHeader>
               <TableRow>
-                {tableHeads.map((head) => (
+                {tableHeads
+                  .filter((head) => {
+                    if (user && user.role === "nurse") {
+                      return head;
+                    }
+                    return head !== "Actions";
+                  })
+                  .map((head) => (
+                    <TableHead key={head} className="text-center">
+                      {head}
+                    </TableHead>
+                  ))}
+                {/* {tableHeads.map((head) => (
                   <TableHead key={head} className="text-center">
                     {head}
                   </TableHead>
-                ))}
+                ))} */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -63,20 +85,22 @@ const TipList = () => {
                   <TableRow key={tip.id}>
                     <TableCell>{tip.title}</TableCell>
                     <TableCell>{tip.description}</TableCell>
-                    <TableCell className="flex gap-3">
-                      <Link to={`/motivation/edit/${tip.id}`}>
-                        <Button>Edit</Button>
-                      </Link>
-                      <Button
-                        className="bg-red-500 hover:bg-red-600"
-                        onClick={() => {
-                          deleteTip(tip.id);
-                          refetch();
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
+                    {user && user.role === "nurse" && (
+                      <TableCell className="flex gap-3">
+                        <Link to={`/motivation/edit/${tip.id}`}>
+                          <Button>Edit</Button>
+                        </Link>
+                        <Button
+                          className="bg-red-500 hover:bg-red-600"
+                          onClick={() => {
+                            deleteTip(tip.id);
+                            refetch();
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
             </TableBody>

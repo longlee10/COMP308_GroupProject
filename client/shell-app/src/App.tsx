@@ -19,6 +19,8 @@ const GameApp = lazy(() => import("gameApp/App"!));
 
 function App() {
   const { loading, error, data, refetch } = useGetCurrentUser();
+  // save data to local storage as user
+  if (data) localStorage.setItem("user", JSON.stringify(data.currentUser));
 
   if (error)
     return (

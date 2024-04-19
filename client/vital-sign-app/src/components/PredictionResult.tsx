@@ -1,6 +1,10 @@
-import { usePredictDisease, useGetVitalSignById } from "@/hooks/useVitalSign";
+import {
+  usePredictDisease,
+  useGetVitalSignById,
+  useGetVitalSigns,
+} from "@/hooks/useVitalSign";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
 import {
   Table,
@@ -17,6 +21,8 @@ import Chart from "./Chart";
 const PredictionResult = () => {
   const { id } = useParams();
   const { handlePredict, data, loading } = usePredictDisease();
+  const { refetch } = useGetVitalSigns();
+  const navigate = useNavigate();
   const vitalSign = useGetVitalSignById(id!);
   const [chartData, setChartData] = useState<VitalSign[]>([]);
 
@@ -80,9 +86,17 @@ const PredictionResult = () => {
           </TableRow>
         </TableBody>
       </Table>
-      <Link to="/vital-sign">
-        <Button>Back to Vital Signs</Button>
-      </Link>
+
+      <Button
+        className="m-auto"
+        onClick={() => {
+          navigate("/vital-sign");
+          refetch();
+        }}
+      >
+        Back to Vital Signs
+      </Button>
+
       <Chart vital_signs={chartData} />
     </div>
   );
