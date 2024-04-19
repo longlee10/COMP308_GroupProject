@@ -34,7 +34,7 @@ const resolvers = {
   Query: {
     users: async () => {
       try {
-        const users = await User.find({});
+        const users = await User.find({}).select("-password -__v");
         return users;
       } catch (error) {
         console.error("Error in users resolver: ", error);
@@ -44,7 +44,7 @@ const resolvers = {
 
     user: async (parent, args) => {
       try {
-        const user = await User.findById(args._id);
+        const user = await User.findById(args._id).select("-password -__v");
         return user;
       } catch (error) {
         console.error("Error in user resolver: ", error);
@@ -52,7 +52,7 @@ const resolvers = {
       }
     },
 
-    currentUser: (parent, args, { req }) => {
+    currentUser: async (parent, args, { req }) => {
       // Assuming the JWT token is sent via an HTTP-only cookie named 'token'
       const token = req.cookies.token;
       if (!token) {
@@ -62,7 +62,9 @@ const resolvers = {
       try {
         // Verify and decode the JWT. Note: Make sure to handle errors appropriately in a real app
         const tokenDecoded = jwt.verify(token, jwtSecretKey);
-        return tokenDecoded;
+        const { userId } = tokenDecoded;
+        const user = await User.findById(userId).select("-password -__v");
+        return user;
       } catch (error) {
         // Token verification failed
         console.error("Error in currentUser resolver: ", error);
