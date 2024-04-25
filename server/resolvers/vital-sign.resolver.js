@@ -179,7 +179,7 @@ const resolvers = {
         const model = createModel();
 
         // Train the model
-        await trainModel(model, trainingData, 10);
+        await trainModel(model, trainingData, 5);
 
         // Evaluate the model
         const { loss, accuracy } = evaluateModel(model, testingData);
@@ -195,9 +195,10 @@ const resolvers = {
         vitalSign.disease = result;
         await vitalSign.save();
 
-        const message = result
-          ? "The patient may have a disease."
-          : "The patient may not have a disease.";
+        const message =
+          predictedData >= DISEASE_THRESHOLD
+            ? "The patient may have a disease."
+            : "The patient may not have a disease.";
 
         return { result, message, loss, accuracy };
       } catch (error) {
